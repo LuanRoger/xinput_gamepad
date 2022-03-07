@@ -1,0 +1,4 @@
+enum ButtonsMode {
+  PRESSED,
+  HOLD
+}
