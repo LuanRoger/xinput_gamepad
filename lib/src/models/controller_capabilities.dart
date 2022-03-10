@@ -21,61 +21,61 @@ class ControllerCapababilities {
 
   ControllerCapababilities(XINPUT_CAPABILITIES xinputCapabilities) {
     switch (xinputCapabilities.Type) {
-      case 0:
+      case XINPUT_DEVTYPE_GAMEPAD:
         _type = ControllerType.GAMEPAD;
         break;
     }
 
     switch (xinputCapabilities.SubType) {
-      case 0:
+      case XINPUT_DEVSUBTYPE_UNKNOWN:
         _subType = ControllerSubType.UNKNOWN;
         break;
-      case 1:
+      case XINPUT_DEVSUBTYPE_GAMEPAD:
         _subType = ControllerSubType.GAMEPAD;
         break;
-      case 2:
+      case XINPUT_DEVSUBTYPE_WHEEL:
         _subType = ControllerSubType.WHEEL;
         break;
-      case 3:
+      case XINPUT_DEVSUBTYPE_ARCADE_STICK:
         _subType = ControllerSubType.ARCADE_STICK;
         break;
-      case 4:
+      case XINPUT_DEVSUBTYPE_FLIGHT_STICK:
         _subType = ControllerSubType.FLIGHT_STICK;
         break;
-      case 5:
+      case XINPUT_DEVSUBTYPE_DANCE_PAD:
         _subType = ControllerSubType.DANCE_PAD;
         break;
-      case 6:
+      case XINPUT_DEVSUBTYPE_GUITAR:
         _subType = ControllerSubType.GUITAR;
         break;
-      case 7:
+      case XINPUT_DEVSUBTYPE_GUITAR_ALTERNATE:
         _subType = ControllerSubType.GUITAR_ALTERNATE;
         break;
-      case 8:
+      case XINPUT_DEVSUBTYPE_DRUM_KIT:
         _subType = ControllerSubType.DRUM_KIT;
         break;
-      case 11:
+      case XINPUT_DEVSUBTYPE_GUITAR_BASS:
         _subType = ControllerSubType.GUITAR_BASS;
         break;
-      case 19:
+      case XINPUT_DEVSUBTYPE_ARCADE_PAD:
         _subType = ControllerSubType.ARCADE_PAD;
         break;
     }
 
     switch (xinputCapabilities.Flags) {
-      case 0:
+      case XINPUT_CAPS_VOICE_SUPPORTED:
         _flags = ControllerFlags.VOICE_SUPPORTED;
         break;
-      case 1:
+      case XINPUT_CAPS_FFB_SUPPORTED:
         _flags = ControllerFlags.FORCE_FEEDBACK_SUPPORTED;
         break;
-      case 2:
+      case XINPUT_CAPS_WIRELESS:
         _flags = ControllerFlags.WIRELESS;
         break;
-      case 3:
+      case XINPUT_CAPS_PMD_SUPPORTED:
         _flags = ControllerFlags.PLUGIN_MODULES_SUPPORTED;
         break;
-      case 4:
+      case XINPUT_CAPS_NO_NAVIGATION:
         _flags = ControllerFlags.NO_NAVIGATION;
         break;
       default:

@@ -19,8 +19,21 @@ class ControllersManager {
     return ControllersManager(controllers);
   }
 
-  //TODO: Implement
-  void disableAll() {}
-  void enableAll() {}
-  void vibrateAll() {}
+  void disableAll() {
+    for (Controller controller in controllers) {
+      controller.activated = false;
+    }
+  }
+
+  void enableAll() {
+    for (Controller controller in controllers) {
+      controller.activated = true;
+    }
+  }
+
+  void vibrateAll(Duration duration) {
+    for (Controller controller in controllers) {
+      controller.vibrate(duration);
+    }
+  }
 }

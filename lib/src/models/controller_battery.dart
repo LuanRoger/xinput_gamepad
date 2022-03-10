@@ -15,19 +15,19 @@ class ControllerBattery {
 
   ControllerBattery(XINPUT_BATTERY_INFORMATION xinputBatteryInformation) {
     switch (xinputBatteryInformation.BatteryType) {
-      case 0:
+      case BATTERY_TYPE_DISCONNECTED:
         _batteryType = BatteryType.DISCONNECTED;
         break;
-      case 1:
+      case BATTERY_TYPE_WIRED:
         _batteryType = BatteryType.WIRED;
         break;
-      case 2:
+      case BATTERY_TYPE_ALKALINE:
         _batteryType = BatteryType.ALKALINE;
         break;
-      case 3:
+      case BATTERY_TYPE_NIMH:
         _batteryType = BatteryType.NIMH;
         break;
-      case 4:
+      case BATTERY_TYPE_UNKNOWN:
         _batteryType = BatteryType.UNKNOWN;
         break;
     }
