@@ -1,1 +1,1 @@
-enum ControllerType { GAMEPAD }
+enum ControllerType { GAMEPAD, UNKNOWN }

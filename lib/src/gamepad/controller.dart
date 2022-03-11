@@ -6,7 +6,7 @@ import 'dart:math';
 import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
 import 'package:xinput_gamepad/src/utils/controller_utils.dart';
-import 'package:xinput_gamepad/src/utils/input_utils.dart';
+import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 class Controller {
@@ -115,7 +115,7 @@ class Controller {
   final Stopwatch _inputPressedTime = Stopwatch();
   _buttonsReact() {
     final ControllerButton? button =
-        InputUtils.getButtonByBitmask(lastGamepadValidState.wButtons);
+        InputBitmaskConverter.convertButton(lastGamepadValidState.wButtons);
 
     buttonsMapping?.forEach((mapedButtons, action) {
       switch (buttonsMode) {

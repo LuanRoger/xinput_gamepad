@@ -1,2 +1,2 @@
 # xinput_gamepad example
-xinput_gamepad package usage example.
+xinput_gamepad package usage examples.

@@ -11,3 +11,5 @@ export 'src/enums/controller_flags.dart';
 export 'src/enums/controller_subtype.dart';
 export 'src/enums/controller_type.dart';
 export 'src/enums/variable_keys.dart';
+export 'src/enums/keyboard_key.dart';
+export 'src/virtual_controllers/virutal_keyboard.dart';

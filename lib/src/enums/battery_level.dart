@@ -1,1 +1,1 @@
-enum BatteryLevel { EMPTY, LOW, MEDIUM, FULL }
+enum BatteryLevel { EMPTY, LOW, MEDIUM, FULL, UNKNOWN }
