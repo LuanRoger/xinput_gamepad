@@ -1,4 +1,4 @@
-enum ButtonsMode {
-  PRESSED,
+enum ButtonMode {
+  PRESS,
   HOLD
 }

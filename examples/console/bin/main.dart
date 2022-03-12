@@ -6,7 +6,8 @@ void main(List<String> arguments) {
 
   List<Controller> availableControllers = List.empty(growable: true);
   for (int controllerIndex in XInputManager.getIndexConnectedControllers()) {
-    final Controller controller = Controller(index: controllerIndex);
+    final Controller controller =
+        Controller(index: controllerIndex, buttonMode: ButtonMode.PRESS);
     controller.buttonsMapping = {
       ControllerButton.A_BUTTON: () =>
           print("Controller $controllerIndex - Button A"),
@@ -62,6 +63,7 @@ void main(List<String> arguments) {
       VariableControllerKey.THUMB_RY: (value) =>
           print("Controller $controllerIndex - THUMB RY - $value")
     };
+    controller.onReleaseButton = (button) => print("$button has ben released");
 
     availableControllers.add(controller);
   }

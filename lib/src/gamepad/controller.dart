@@ -10,8 +10,11 @@ import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_conver
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 class Controller {
+  //Controller mode and identifier
   final int index;
-  final ButtonsMode buttonsMode;
+  final ButtonMode buttonMode;
+
+  //Controller state
   bool get activated {
     return _controllerListenerSubscription == null
         ? false
@@ -24,8 +27,11 @@ class Controller {
         : _controllerListenerSubscription?.pause();
   }
 
+  //XInput state
   int _dwPacketNumber = 0;
   late XINPUT_GAMEPAD lastGamepadValidState;
+
+  //Controller informations
   late ControllerCapababilities _capababilities;
   ControllerCapababilities get capababilities {
     return _capababilities;
@@ -39,6 +45,9 @@ class Controller {
   //Maping
   Map<ControllerButton, Function>? buttonsMapping;
   Map<VariableControllerKey, Function(int value)>? variableKeysMapping;
+
+  //Events
+  Function(ControllerButton button)? onReleaseButton;
 
   //Vibration
   //Available range: 0-65535
@@ -55,7 +64,8 @@ class Controller {
       {required this.index,
       this.buttonsMapping,
       this.variableKeysMapping,
-      this.buttonsMode = ButtonsMode.PRESSED,
+      this.onReleaseButton,
+      this.buttonMode = ButtonMode.PRESS,
       this.leftVibrationSpeed = 16000,
       this.rightVibrationSpeed = 16000,
       this.leftThumbDeadzone = 7849,
@@ -68,7 +78,7 @@ class Controller {
 
     free(tempCapabilities);
 
-    //Set battery info
+    //Set initial battery info
     updateBatteryInfo();
   }
 
@@ -112,29 +122,32 @@ class Controller {
   }
 
   ControllerButton? _lastButtonPressed;
-  final Stopwatch _inputPressedTime = Stopwatch();
-  _buttonsReact() {
+  void _buttonsReact() {
     final ControllerButton? button =
         InputBitmaskConverter.convertButton(lastGamepadValidState.wButtons);
 
     buttonsMapping?.forEach((mapedButtons, action) {
-      switch (buttonsMode) {
-        case ButtonsMode.PRESSED:
-          if (!_inputPressedTime.isRunning) _inputPressedTime.start();
+      //The button pressed is different than last.
+      //This means the button has been released.
+      if (_lastButtonPressed != null && button != _lastButtonPressed) {
+        onReleaseButton?.call(_lastButtonPressed!);
+        _lastButtonPressed = null;
+      }
 
-          if (_inputPressedTime.elapsed.inMilliseconds >
-                  XInputManager.inputLag &&
-              button != _lastButtonPressed) {
-            _lastButtonPressed = null;
-            _inputPressedTime.reset();
-          }
+      switch (buttonMode) {
+        case ButtonMode.PRESS:
+          //When the the current state's button is diferent than last.
           if (_lastButtonPressed == null && button == mapedButtons) {
             _lastButtonPressed = button;
             action();
           }
           break;
-        case ButtonsMode.HOLD:
-          if (button == mapedButtons) action();
+        case ButtonMode.HOLD:
+          //No matter if the last state's button is the same than this.
+          if (button == mapedButtons) {
+            _lastButtonPressed = button;
+            action();
+          }
           break;
       }
     });
