@@ -1,3 +1,6 @@
+## 0.0.4
+- VirtualKeyboard complete.
+
 ## 0.0.3
 - Created event to execute when some button is released.
 - ButtonMode enum modified.

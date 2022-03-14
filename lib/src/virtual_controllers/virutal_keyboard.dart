@@ -10,7 +10,10 @@ class VirtualKeyboard {
     ZeroMemory(input, sizeOf<INPUT>());
 
     input.ref.type = INPUT_KEYBOARD;
-    input.ref.ki.wVk = KeyboardKeyEnumConverter.convertKeyboardKey(keyInput);
+    int? virtualKeyMask = KeyboardKeyEnumConverter.convertKeyboardKey(keyInput);
+    if (virtualKeyMask == null) return;
+
+    input.ref.ki.wVk = virtualKeyMask;
 
     SendInput(1, input, sizeOf<INPUT>());
 
