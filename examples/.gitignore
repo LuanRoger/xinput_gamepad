@@ -6,7 +6,10 @@
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
+
+#Build and compiled
 build/
+console/bin/*.exe
 
 # Web related
 lib/generated_plugin_registrant.dart
