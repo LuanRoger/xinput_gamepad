@@ -1,3 +1,4 @@
+import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/enums/keyboard_key.dart';
 
 class KeyboardKeyEnumConverter {
@@ -6,145 +7,145 @@ class KeyboardKeyEnumConverter {
       case KeyboardKey.A:
         return 65;
       case KeyboardKey.ADD:
-        return 107;
+        return VK_ADD;
       case KeyboardKey.ALT:
-        return 18;
+        return VK_MENU;
       case KeyboardKey.APPS:
-        return 93;
+        return VK_APPS;
       case KeyboardKey.ATTN:
-        return 246;
+        return 246; //VK_ATTN
       case KeyboardKey.B:
         return 66;
       case KeyboardKey.BACKSPACE:
-        return 8;
+        return VK_BACK;
       case KeyboardKey.BROWSER_BACK:
-        return 166;
+        return VK_BROWSER_BACK;
       case KeyboardKey.BROWSER_FAVORITES:
-        return 171;
+        return VK_BROWSER_FAVORITES;
       case KeyboardKey.BROWSER_FORAWRD:
-        return 167;
+        return VK_BROWSER_FORWARD;
       case KeyboardKey.BROWSER_HOME:
-        return 172;
+        return VK_BROWSER_HOME;
       case KeyboardKey.BROWSER_REFRESH:
-        return 168;
+        return VK_BROWSER_REFRESH;
       case KeyboardKey.BROWSER_SEARCH:
-        return 170;
+        return VK_BROWSER_SEARCH;
       case KeyboardKey.BROWSER_STOP:
-        return 169;
+        return VK_BROWSER_STOP;
       case KeyboardKey.C:
         return 67;
       case KeyboardKey.CANCEL:
-        return 3;
+        return VK_CANCEL;
       case KeyboardKey.CAPS_LOCK:
-        return 20;
+        return VK_CAPITAL;
       case KeyboardKey.CONTROL:
-        return 17;
+        return VK_CONTROL;
       case KeyboardKey.CRSEL:
-        return 247;
+        return 247; // VK_CRSEL
       case KeyboardKey.D:
         return 68;
       case KeyboardKey.D0:
-        return 48;
+        return VK_NUMPAD0;
       case KeyboardKey.D1:
-        return 49;
+        return VK_NUMPAD1;
       case KeyboardKey.D2:
-        return 50;
+        return VK_NUMPAD2;
       case KeyboardKey.D3:
-        return 51;
+        return VK_NUMPAD3;
       case KeyboardKey.D4:
-        return 52;
+        return VK_NUMPAD4;
       case KeyboardKey.D5:
-        return 53;
+        return VK_NUMPAD5;
       case KeyboardKey.D6:
-        return 54;
+        return VK_NUMPAD6;
       case KeyboardKey.D7:
-        return 55;
+        return VK_NUMPAD7;
       case KeyboardKey.D8:
-        return 56;
+        return VK_NUMPAD8;
       case KeyboardKey.D9:
-        return 57;
+        return VK_NUMPAD9;
       case KeyboardKey.DECIMAL:
-        return 110;
+        return VK_DECIMAL;
       case KeyboardKey.DELETE:
-        return 46;
+        return VK_DELETE;
       case KeyboardKey.DIVIDE:
-        return 111;
+        return VK_DIVIDE;
       case KeyboardKey.DOWN_ARROW:
-        return 40;
+        return VK_DOWN;
       case KeyboardKey.E:
         return 69;
       case KeyboardKey.END:
-        return 35;
+        return VK_END;
       case KeyboardKey.ENTER:
-        return 13;
+        return VK_RETURN;
       case KeyboardKey.ERASE_EOF:
-        return 249;
+        return 249; //VK_EREOF
       case KeyboardKey.EXECUTE:
-        return 43;
+        return VK_EXECUTE;
       case KeyboardKey.EXSEL:
-        return 248;
+        return 248; //VK_EXSEL
       case KeyboardKey.F:
         return 70;
       case KeyboardKey.F1:
-        return 112;
+        return VK_F1;
       case KeyboardKey.F2:
-        return 113;
+        return VK_F2;
       case KeyboardKey.F3:
-        return 114;
+        return VK_F3;
       case KeyboardKey.F4:
-        return 115;
+        return VK_F4;
       case KeyboardKey.F5:
-        return 116;
+        return VK_F5;
       case KeyboardKey.F6:
-        return 117;
+        return VK_F5;
       case KeyboardKey.F7:
-        return 118;
+        return VK_F7;
       case KeyboardKey.F8:
-        return 119;
+        return VK_F8;
       case KeyboardKey.F9:
-        return 120;
+        return VK_F9;
       case KeyboardKey.F10:
-        return 121;
+        return VK_F10;
       case KeyboardKey.F11:
-        return 122;
+        return VK_F11;
       case KeyboardKey.F12:
-        return 123;
+        return VK_F12;
       case KeyboardKey.F13:
-        return 124;
+        return VK_F13;
       case KeyboardKey.F14:
-        return 125;
+        return VK_F14;
       case KeyboardKey.F15:
-        return 126;
+        return VK_F15;
       case KeyboardKey.F16:
-        return 127;
+        return VK_F16;
       case KeyboardKey.F17:
-        return 128;
+        return VK_F17;
       case KeyboardKey.F18:
-        return 129;
+        return VK_F18;
       case KeyboardKey.F19:
-        return 130;
+        return VK_F19;
       case KeyboardKey.F20:
-        return 131;
+        return VK_F20;
       case KeyboardKey.F21:
-        return 132;
+        return VK_F21;
       case KeyboardKey.F22:
-        return 133;
+        return VK_F22;
       case KeyboardKey.F23:
-        return 134;
+        return VK_F23;
       case KeyboardKey.F24:
-        return 135;
+        return VK_F24;
       case KeyboardKey.G:
         return 71;
       case KeyboardKey.H:
         return 72;
       case KeyboardKey.HELP:
-        return 47;
+        return VK_HELP;
       case KeyboardKey.HOME:
-        return 36;
+        return VK_HOME;
       case KeyboardKey.I:
         return 73;
       case KeyboardKey.INSERT:
-        return 45;
+        return VK_INSERT;
       case KeyboardKey.J:
         return 74;
       case KeyboardKey.K:
@@ -152,153 +153,153 @@ class KeyboardKeyEnumConverter {
       case KeyboardKey.L:
         return 76;
       case KeyboardKey.LAUNCH_APP_1:
-        return 182;
+        return VK_LAUNCH_APP1;
       case KeyboardKey.LAUNCH_APP_2:
-        return 183;
+        return VK_LAUNCH_APP2;
       case KeyboardKey.LAUNCH_MAIL:
-        return 180;
+        return VK_LAUNCH_MAIL;
       case KeyboardKey.L_CTRL:
-        return 162;
+        return VK_LCONTROL;
       case KeyboardKey.LEFT_ARROW:
-        return 37;
+        return VK_LEFT;
       case KeyboardKey.L_ALT:
-        return 164;
+        return VK_LMENU;
       case KeyboardKey.L_SHIFT:
-        return 160;
+        return VK_LSHIFT;
       case KeyboardKey.L_WIN:
-        return 91;
+        return VK_LWIN;
       case KeyboardKey.M:
         return 77;
       case KeyboardKey.MEDIA_NEXT_TRACK:
-        return 176;
+        return VK_MEDIA_NEXT_TRACK;
       case KeyboardKey.MEDIA_PLAY_PAUSE:
-        return 179;
+        return VK_MEDIA_PLAY_PAUSE;
       case KeyboardKey.MEDIA_PREVIOUS_TRACK:
-        return 177;
+        return VK_MEDIA_PREV_TRACK;
       case KeyboardKey.MEDIA_STOP:
-        return 178;
+        return VK_MEDIA_STOP;
       case KeyboardKey.MULTIPLY:
-        return 106;
+        return VK_MULTIPLY;
       case KeyboardKey.N:
         return 78;
       case KeyboardKey.NUM_LOCK:
-        return 144;
+        return VK_NUMLOCK;
       case KeyboardKey.NUM_PAD_0:
-        return 96;
+        return VK_NUMPAD0;
       case KeyboardKey.NUM_PAD_1:
-        return 97;
+        return VK_NUMPAD1;
       case KeyboardKey.NUM_PAD_2:
-        return 98;
+        return VK_NUMPAD2;
       case KeyboardKey.NUM_PAD_3:
-        return 99;
+        return VK_NUMPAD3;
       case KeyboardKey.NUM_PAD_4:
-        return 100;
+        return VK_NUMPAD4;
       case KeyboardKey.NUM_PAD_5:
-        return 101;
+        return VK_NUMPAD5;
       case KeyboardKey.NUM_PAD_6:
-        return 102;
+        return VK_NUMPAD6;
       case KeyboardKey.NUM_PAD_7:
-        return 103;
+        return VK_NUMPAD7;
       case KeyboardKey.NUM_PAD_8:
-        return 104;
+        return VK_NUMPAD8;
       case KeyboardKey.NUM_PAD_9:
-        return 105;
+        return VK_NUMPAD9;
       case KeyboardKey.O:
         return 79;
       case KeyboardKey.OEM_1:
-        return 186;
+        return VK_OEM_1;
       case KeyboardKey.OEM_2:
-        return 191;
+        return VK_OEM_2;
       case KeyboardKey.OEM_3:
-        return 192;
+        return VK_OEM_3;
       case KeyboardKey.OEM_4:
-        return 219;
+        return VK_OEM_4;
       case KeyboardKey.OEM_5:
-        return 220;
+        return VK_OEM_5;
       case KeyboardKey.OEM_6:
-        return 221;
+        return VK_OEM_6;
       case KeyboardKey.OEM_7:
-        return 222;
+        return VK_OEM_7;
       case KeyboardKey.OEM_8:
-        return 223;
+        return VK_OEM_8;
       case KeyboardKey.OEM_CLEAR:
-        return 254;
+        return 254; //VK_OEM_CLEAR
       case KeyboardKey.OEM_COMMA:
-        return 188;
+        return VK_OEM_COMMA;
       case KeyboardKey.OEM_MINUS:
-        return 189;
+        return VK_OEM_MINUS;
       case KeyboardKey.OEM_PERIOD:
-        return 190;
+        return VK_OEM_PERIOD;
       case KeyboardKey.OEM_PLUS:
-        return 187;
+        return VK_OEM_PLUS;
       case KeyboardKey.P:
         return 80;
       case KeyboardKey.PA_1:
-        return 253;
+        return 253; //VK_PA1
       case KeyboardKey.PAGE_DOWN:
-        return 34;
+        return VK_NEXT;
       case KeyboardKey.PAGE_UP:
-        return 33;
+        return VK_PRIOR;
       case KeyboardKey.PAUSE:
-        return 19;
-      case KeyboardKey.PALY:
-        return 250;
+        return VK_PAUSE;
+      case KeyboardKey.PLAY:
+        return 250; // VK_PLAY
       case KeyboardKey.PRINT:
-        return 42;
+        return VK_PRINT;
       case KeyboardKey.PRINT_SCREEN:
-        return 44;
+        return VK_PRINT;
       case KeyboardKey.PROCESS_KEY:
-        return 229;
+        return VK_PROCESSKEY;
       case KeyboardKey.Q:
         return 81;
       case KeyboardKey.R:
         return 82;
       case KeyboardKey.R_CTRL:
-        return 163;
+        return VK_RCONTROL;
       case KeyboardKey.RETURN:
-        return 355;
+        return VK_RETURN;
       case KeyboardKey.RIGHT_ARROW:
-        return 39;
+        return VK_RIGHT;
       case KeyboardKey.R_ALT:
-        return 165;
+        return VK_RMENU;
       case KeyboardKey.R_SHIFT:
-        return 161;
+        return VK_RSHIFT;
       case KeyboardKey.R_WIN:
-        return 92;
+        return VK_RSHIFT;
       case KeyboardKey.S:
         return 83;
       case KeyboardKey.SCROLL_LOCK:
-        return 145;
+        return VK_SCROLL;
       case KeyboardKey.SELECT:
-        return 41;
+        return VK_SELECT;
       case KeyboardKey.SELECT_MEDIA:
-        return 181;
+        return VK_LAUNCH_MEDIA_SELECT;
       case KeyboardKey.SEPARATOR:
-        return 108;
+        return VK_SEPARATOR;
       case KeyboardKey.SHIFT:
-        return 16;
+        return VK_SHIFT;
       case KeyboardKey.SLEEP:
-        return 95;
+        return VK_SLEEP;
       case KeyboardKey.SPACE:
-        return 32;
+        return VK_SPACE;
       case KeyboardKey.SUBTRACT:
-        return 109;
+        return VK_SUBTRACT;
       case KeyboardKey.T:
         return 84;
       case KeyboardKey.TAB:
-        return 9;
+        return VK_TAB;
       case KeyboardKey.U:
         return 85;
       case KeyboardKey.UP_ARROW:
-        return 38;
+        return VK_UP;
       case KeyboardKey.V:
         return 86;
       case KeyboardKey.VOLUME_DOWN:
-        return 174;
+        return VK_UP;
       case KeyboardKey.VOLUME_MUTE:
-        return 173;
+        return VK_VOLUME_MUTE;
       case KeyboardKey.VOLUME_UP:
-        return 175;
+        return VK_VOLUME_UP;
       case KeyboardKey.W:
         return 87;
       case KeyboardKey.X:
@@ -308,7 +309,7 @@ class KeyboardKeyEnumConverter {
       case KeyboardKey.Z:
         return 90;
       case KeyboardKey.ZOOM:
-        return 251;
+        return 251; // VK_ZOOM
       default:
         return null;
     }

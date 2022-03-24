@@ -121,7 +121,7 @@ enum KeyboardKey {
   PAGE_DOWN,
   PAGE_UP,
   PAUSE,
-  PALY,
+  PLAY,
   PRINT,
   PRINT_SCREEN,
   PROCESS_KEY,
