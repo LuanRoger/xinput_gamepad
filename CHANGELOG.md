@@ -1,3 +1,7 @@
+## 0.0.5
+- Created VirtualCursor.
+- Some files and classes renamed.
+
 ## 0.0.4
 - VirtualKeyboard complete.
 

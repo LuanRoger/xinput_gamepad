@@ -4,6 +4,14 @@
 ## Dependencies
 - [win32](https://pub.dev/packages/win32)
 
+## Features
+- Handle controller inputs easily;
+- Get controllers information (Battery type, battery level, controller type and more);
+- Get connected controllers;
+- Set input lag and controller's deadzone;
+- Set and use controller's vibration motor;
+- Simulate keyboard and mouse inputs with controller;
+
 ## Instalation
 *Not available*
 
@@ -39,6 +47,8 @@ See all the examples:
 |------|-------------|
 | [console](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/console) | Get controller inputs and show what button is pressed. |
 | [flutter_windwos](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/flutter_windows) | Shows what button is pressed in each connected controller and the thumbs and triggers variation. |
+| [flutter_virutal_keyboard](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/flutter_virtual_keyboard) | Map each keyboard key to controller handler. |
+> See examples ready-to-run [here](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/pre_builded_examples)
 
 ## Documentation
 *Soon*
