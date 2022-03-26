@@ -37,20 +37,20 @@ class ControllerCapabilitiesBitmaskConverter {
         return ControllerSubType.UNKNOWN;
     }
   }
-  static ControllerFlags convertFlag(int bitmask) {
+  static ControllerFlag convertFlag(int bitmask) {
     switch (bitmask) {
       case XINPUT_CAPS_VOICE_SUPPORTED:
-        return ControllerFlags.VOICE_SUPPORTED;
+        return ControllerFlag.VOICE_SUPPORTED;
       case XINPUT_CAPS_FFB_SUPPORTED:
-        return ControllerFlags.FORCE_FEEDBACK_SUPPORTED;
+        return ControllerFlag.FORCE_FEEDBACK_SUPPORTED;
       case XINPUT_CAPS_WIRELESS:
-        return ControllerFlags.WIRELESS;
+        return ControllerFlag.WIRELESS;
       case XINPUT_CAPS_PMD_SUPPORTED:
-        return ControllerFlags.PLUGIN_MODULES_SUPPORTED;
+        return ControllerFlag.PLUGIN_MODULES_SUPPORTED;
       case XINPUT_CAPS_NO_NAVIGATION:
-        return ControllerFlags.NO_NAVIGATION;
+        return ControllerFlag.NO_NAVIGATION;
       default:
-        return ControllerFlags.UNKNOWN;
+        return ControllerFlag.UNKNOWN;
     }
   }
 }

@@ -15,10 +15,11 @@ class VirtualKeyboard {
 
     input.ref.ki.wVk = virtualKeyMask;
 
-    SendInput(1, input, sizeOf<INPUT>());
+    SendInput(INPUT_KEYBOARD, input, sizeOf<INPUT>());
 
+    //Release button
     input.ref.ki.dwFlags = KEYEVENTF_KEYUP;
-    SendInput(1, input, sizeOf<INPUT>());
+    SendInput(INPUT_KEYBOARD, input, sizeOf<INPUT>());
 
     free(input);
   }

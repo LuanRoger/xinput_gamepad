@@ -1,4 +1,4 @@
-enum ControllerFlags {
+enum ControllerFlag {
   UNKNOWN,
   VOICE_SUPPORTED,
   FORCE_FEEDBACK_SUPPORTED,

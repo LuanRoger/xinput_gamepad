@@ -1,0 +1,1 @@
+enum MouseVariableButton { CURSOR, WHELL }

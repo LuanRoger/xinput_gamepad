@@ -1,0 +1,1 @@
+enum MouseButton { LEFT, RIGHT, WHELL }

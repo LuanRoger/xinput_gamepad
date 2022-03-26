@@ -1,5 +1,5 @@
 import 'package:win32/win32.dart';
-import 'package:xinput_gamepad/src/enums/controller_flags.dart';
+import 'package:xinput_gamepad/src/enums/controller_flag.dart';
 import 'package:xinput_gamepad/src/enums/controller_subtype.dart';
 import 'package:xinput_gamepad/src/enums/controller_type.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/controller_capabilities_bitmask_converter.dart';
@@ -15,8 +15,8 @@ class ControllerCapababilities {
     return _subType;
   }
 
-  late ControllerFlags _flags;
-  ControllerFlags get flags {
+  late ControllerFlag _flags;
+  ControllerFlag get flags {
     return _flags;
   }
 
