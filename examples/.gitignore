@@ -11,6 +11,11 @@
 build/
 console/bin/*.exe
 
+#Unsuported Plataforms
+android/
+ios/
+web/
+
 # Web related
 lib/generated_plugin_registrant.dart
 
