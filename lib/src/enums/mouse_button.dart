@@ -1,1 +1,2 @@
-enum MouseButton { LEFT, RIGHT, WHELL }
+///The buttons of the mouse.
+enum MouseButton { LEFT, RIGHT, WHEEL }

@@ -6,7 +6,12 @@ import 'package:xinput_gamepad/src/enums/mouse_button.dart';
 import 'package:xinput_gamepad/src/enums/mouse_variable_button.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/mouse_button_bitmask_converter.dart';
 
+///Simulate a mouse/cursor inputs and movements.
 class VirtualCursor {
+  ///Set force to a variable mouse button.
+  ///```force``` - Amount of the movement.
+  ///```axis``` - Axis of the movement.
+  ///```button``` - Mouse variable button that will be affected by the force.
   static void setForce(int force, MouseAxis axis, MouseVariableButton button) {
     Pointer<INPUT> input = calloc<INPUT>();
     ZeroMemory(input, sizeOf<INPUT>());
@@ -24,7 +29,7 @@ class VirtualCursor {
             break;
         }
         break;
-      case MouseVariableButton.WHELL:
+      case MouseVariableButton.WHEEL:
         input.ref.mi.dwFlags =
             axis == MouseAxis.Y ? MOUSEEVENTF_WHEEL : MOUSEEVENTF_HWHEEL;
         input.ref.mi.mouseData = force;
@@ -36,6 +41,8 @@ class VirtualCursor {
     free(input);
   }
 
+  ///Simulate a press and release in a mouse button.
+  ///```button``` - Mouse button.
   static void press(MouseButton button) {
     Pointer<INPUT> input = calloc<INPUT>();
     ZeroMemory(input, sizeOf<INPUT>());

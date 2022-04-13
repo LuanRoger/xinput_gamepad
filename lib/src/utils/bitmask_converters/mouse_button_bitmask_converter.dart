@@ -8,7 +8,7 @@ class MouseButtonBitmaskConverter {
         return MOUSEEVENTF_LEFTDOWN;
       case MouseButton.RIGHT:
         return MOUSEEVENTF_RIGHTDOWN;
-      case MouseButton.WHELL:
+      case MouseButton.WHEEL:
         return MOUSEEVENTF_MIDDLEDOWN;
     }
   }
@@ -19,7 +19,7 @@ class MouseButtonBitmaskConverter {
         return MOUSEEVENTF_LEFTUP;
       case MouseButton.RIGHT:
         return MOUSEEVENTF_RIGHTUP;
-      case MouseButton.WHELL:
+      case MouseButton.WHEEL:
         return MOUSEEVENTF_MIDDLEUP;
     }
   }

@@ -29,15 +29,15 @@ void main(List<String> arguments) {
         if (value == 0) return;
         int force = value > 0 ? positiveForce : negativeForce;
 
-        VirtualCursor.setForce(force, MouseAxis.X, MouseVariableButton.WHELL);
-        print("Controller $controllerIndex - Set force in whell in X axis");
+        VirtualCursor.setForce(force, MouseAxis.X, MouseVariableButton.WHEEL);
+        print("Controller $controllerIndex - Set force in wheel in X axis");
       }),
       VariableControllerKey.THUMB_RY: ((value) {
         if (value == 0) return;
         int force = value > 0 ? positiveForce : negativeForce;
 
-        VirtualCursor.setForce(force, MouseAxis.Y, MouseVariableButton.WHELL);
-        print("Controller $controllerIndex - Set force in whell in Y axis");
+        VirtualCursor.setForce(force, MouseAxis.Y, MouseVariableButton.WHEEL);
+        print("Controller $controllerIndex - Set force in wheel in Y axis");
       })
     };
     controller.buttonsMapping = {
@@ -50,7 +50,7 @@ void main(List<String> arguments) {
         print("Controller $controllerIndex - Press right mouse button");
       },
       ControllerButton.RIGHT_THUMB: () {
-        VirtualCursor.press(MouseButton.WHELL);
+        VirtualCursor.press(MouseButton.WHEEL);
         print("Controller $controllerIndex - Press wheel mouse button");
       }
     };

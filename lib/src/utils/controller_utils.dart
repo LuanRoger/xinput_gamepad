@@ -37,31 +37,12 @@ class ControllerUtils {
     return isConnected;
   }
 
-  static int getDwState(int controllerIndex) {
-    final state = calloc<XINPUT_STATE>();
-
-    final int dwState = XInputGetState(controllerIndex, state);
-
-    free(state);
-
-    return dwState;
-  }
-
-  static Pointer<XINPUT_STATE> getState(int controllerIndex) {
-    final state = calloc<XINPUT_STATE>();
-
-    XInputGetState(controllerIndex, state);
-
-    return state;
-  }
-
   static Pointer<XINPUT_CAPABILITIES> getCapabilities(int controllerIndex) {
     final capabilities = calloc<XINPUT_CAPABILITIES>();
     XInputGetCapabilities(controllerIndex, 0, capabilities);
 
     return capabilities;
   }
-
   static Pointer<XINPUT_BATTERY_INFORMATION> getBatteryInformation(
       int controllerIndex) {
     final batteryInformation = calloc<XINPUT_BATTERY_INFORMATION>();

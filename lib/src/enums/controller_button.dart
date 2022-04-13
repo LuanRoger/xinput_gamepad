@@ -16,6 +16,8 @@
 //Y - 32768 - 0x4000
 
 //See more: https://docs.microsoft.com/pt-br/windows/win32/api/XInput/ns-xinput-xinput_gamepad
+
+///Buttons of the controller (Xbox model).
 enum ControllerButton {
   DPAD_UP,
   DPAD_DOWN,

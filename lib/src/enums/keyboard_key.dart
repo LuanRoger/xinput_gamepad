@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+///The keys of the keyboard.
+///See more: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 enum KeyboardKey {
   A,
   ADD,

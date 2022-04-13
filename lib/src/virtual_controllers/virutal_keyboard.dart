@@ -4,7 +4,10 @@ import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/enums/keyboard_key.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/keyboard_key_enum_converter.dart';
 
+///Simualte a key press in keyboard.
 class VirtualKeyboard {
+  ///Simualte a key press and release in keyboard.
+  ///```keyInput``` - Key to be pressed.
   static void press(KeyboardKey keyInput) {
     Pointer<INPUT> input = calloc<INPUT>();
     ZeroMemory(input, sizeOf<INPUT>());

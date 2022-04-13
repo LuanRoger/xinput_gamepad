@@ -9,12 +9,24 @@ import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
+///Used to simulate events using the controller with XInput.
+///
+///```dart
+///final Controller controller = Controller(index: controllerIndex);
+///```
 class Controller {
   //Controller mode and identifier
+  ///Index of the controller in XInput system.
   final int index;
+
+  ///Controller button mode.
   final ButtonMode buttonMode;
 
   //Controller state
+  ///The functional state of the control.
+  ///
+  ///If true, the controller is running and listening inputs.
+  ///If false, controller isn't listening inputs.
   bool get activated {
     return _controllerListenerSubscription == null
         ? false
@@ -29,37 +41,79 @@ class Controller {
 
   //XInput state
   int _dwPacketNumber = 0;
-  late XINPUT_GAMEPAD lastGamepadValidState;
+  late XINPUT_GAMEPAD _lastGamepadValidState;
 
   //Controller informations
+  ///Retrives the controller capababilities.
   late ControllerCapababilities _capababilities;
   ControllerCapababilities get capababilities {
     return _capababilities;
   }
 
+  ///Retrives the controller's battery.
   late ControllerBattery _batteryInformation;
   ControllerBattery get batteryInformation {
     return _batteryInformation;
   }
 
   //Maping
+  ///Set the initial mapping of the controller's buttons.
+  ///```dart
+  ///controller.buttonsMapping = {
+  ///    ControllerButton.A_BUTTON: () =>
+  ///        print("Controller $controllerIndex - Button A"),
+  ///    ControllerButton.B_BUTTON: () =>
+  ///        print("Controller $controllerIndex - Button B"),
+  ///    ControllerButton.X_BUTTON: () =>
+  ///        print("Controller $controllerIndex - Button X"),
+  ///    ControllerButton.Y_BUTTON: () =>
+  ///        print("Controller $controllerIndex - Button Y")
+  ///};
+  ///```
   Map<ControllerButton, Function>? buttonsMapping;
+
+  ///Set the initial mapping of the controller's variable buttons.
+  ///```dart
+  ///controller.variableKeysMapping = {
+  ///    VariableControllerKey.LEFT_TRIGGER: (value) =>
+  ///        print("Controller $controllerIndex - LEFT TRIGGER - $value"),
+  ///    VariableControllerKey.RIGHT_TRIGGER: (value) =>
+  ///        print("Controller $controllerIndex - RIGHT TRIGGER - $value")
+  ///};
+  ///```
   Map<VariableControllerKey, Function(int value)>? variableKeysMapping;
 
   //Events
+  ///Occurs when a controller's button is realeased.
+  ///Gives what button has been released in ```button``` parameter.
+  ///
+  ///```dart
+  ///controller.onReleaseButton = (button) => print("$button has ben released");
+  ///```
   Function(ControllerButton button)? onReleaseButton;
 
   //Vibration
   //Available range: 0-65535
+  ///Set the speed of the vibartion of the left motor.
   int leftVibrationSpeed;
+
+  ///Set the speed of the vibration of the right motor.
   int rightVibrationSpeed;
   late Pointer<XINPUT_VIBRATION> _vibration;
 
   //Deadzone
+  ///Set the deadzone of the controllers's left thumb.
   int leftThumbDeadzone;
+
+  ///Set the deadzone of the controllers's right thumb.
   int rightThumbDeadzone;
+
+  ///Set the deadzone of the controller's triggers.
   int triggersDeadzone;
 
+  ///Instantiate a new ```Controller```.
+  ///Set a initial controller index than can be retrived from ```XInputManager```
+  ///and use to initialize a new controller.
   Controller(
       {required this.index,
       this.buttonsMapping,
@@ -83,13 +137,15 @@ class Controller {
   }
 
   StreamSubscription? _controllerListenerSubscription;
+
+  ///Start to listen inputs from the controller.
   void lister() async {
     final controllerStateStream = ControllerUtils.streamState(index)
         .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
 
     _controllerListenerSubscription = controllerStateStream.listen((event) {
       _dwPacketNumber = event.ref.dwPacketNumber;
-      lastGamepadValidState = event.ref.Gamepad;
+      _lastGamepadValidState = event.ref.Gamepad;
 
       _buttonsReact();
       _thumbsTriggersReact();
@@ -100,6 +156,9 @@ class Controller {
     }, cancelOnError: false);
   }
 
+  ///Vibrate the controller based on the values defined in ```leftVibrationSpeed``` and ```rightVibrationSpeed```.
+  ///
+  ///```duration``` - Duration of how long the controller will be vibrating.
   Future vibrate(Duration duration) async {
     _setVibration();
     XInputSetState(index, _vibration);
@@ -113,6 +172,7 @@ class Controller {
             }));
   }
 
+  ///Update the actual battery information in ```batteryInformation```.
   void updateBatteryInfo() {
     final Pointer<XINPUT_BATTERY_INFORMATION> tempBatteryInfo =
         ControllerUtils.getBatteryInformation(index);
@@ -124,7 +184,7 @@ class Controller {
   ControllerButton? _lastButtonPressed;
   void _buttonsReact() {
     final ControllerButton? button =
-        InputBitmaskConverter.convertButton(lastGamepadValidState.wButtons);
+        InputBitmaskConverter.convertButton(_lastGamepadValidState.wButtons);
 
     buttonsMapping?.forEach((mapedButtons, action) {
       //The button pressed is different than last.
@@ -154,12 +214,12 @@ class Controller {
   }
 
   void _thumbsTriggersReact() {
-    final int leftTrigger = lastGamepadValidState.bLeftTrigger;
-    final int rightTrigger = lastGamepadValidState.bRightTrigger;
-    final int thumbLx = lastGamepadValidState.sThumbLX;
-    final int thumbLy = lastGamepadValidState.sThumbLY;
-    final int thumbRx = lastGamepadValidState.sThumbRX;
-    final int thumbRy = lastGamepadValidState.sThumbRY;
+    final int leftTrigger = _lastGamepadValidState.bLeftTrigger;
+    final int rightTrigger = _lastGamepadValidState.bRightTrigger;
+    final int thumbLx = _lastGamepadValidState.sThumbLX;
+    final int thumbLy = _lastGamepadValidState.sThumbLY;
+    final int thumbRx = _lastGamepadValidState.sThumbRX;
+    final int thumbRy = _lastGamepadValidState.sThumbRY;
 
     final double magnitudeL = sqrt(thumbLx * thumbLx + thumbLy * thumbLy);
     final double magnitudeR = sqrt(thumbRx * thumbRx + thumbRy * thumbRy);
@@ -188,6 +248,7 @@ class Controller {
     });
   }
 
+  bool _isValid() => ControllerUtils.isConnected(index);
   void _setVibration() {
     if (!_isValid()) return;
 
@@ -197,6 +258,4 @@ class Controller {
     _vibration.ref.wLeftMotorSpeed = leftVibrationSpeed;
     _vibration.ref.wRightMotorSpeed = rightVibrationSpeed;
   }
-
-  bool _isValid() => ControllerUtils.isConnected(index);
 }

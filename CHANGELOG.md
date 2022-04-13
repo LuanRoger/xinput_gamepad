@@ -1,3 +1,7 @@
+## 0.0.6
+- Documentation in code created.
+- Minor fixes.
+
 ## 0.0.5
 - Created VirtualCursor.
 - Some files and classes renamed.

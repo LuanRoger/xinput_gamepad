@@ -1,3 +1,5 @@
+///Subtype of the controller.
+///See more: https://docs.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes
 enum ControllerSubType {
   UNKNOWN,
   GAMEPAD,
