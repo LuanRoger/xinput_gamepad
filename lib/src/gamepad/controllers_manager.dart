@@ -42,4 +42,8 @@ class ControllersManager {
       controller.vibrate(duration);
     }
   }
+
+  ///Get the index of all connected controllers.
+  static List<int> getIndexConnectedControllers() =>
+      ControllerUtils.getIndexConnectedControllers();
 }

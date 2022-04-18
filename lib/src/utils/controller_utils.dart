@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'package:win32/win32.dart';
 import 'package:ffi/ffi.dart';
-import 'package:xinput_gamepad/src/xinput_manager.dart';
+import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 class ControllerUtils {
   static List<int> getIndexConnectedControllers() {
@@ -43,12 +43,24 @@ class ControllerUtils {
 
     return capabilities;
   }
+
   static Pointer<XINPUT_BATTERY_INFORMATION> getBatteryInformation(
       int controllerIndex) {
     final batteryInformation = calloc<XINPUT_BATTERY_INFORMATION>();
     XInputGetBatteryInformation(controllerIndex, 0, batteryInformation);
 
     return batteryInformation;
+  }
+
+  static Pointer<XINPUT_VIBRATION> getControllerVibration(
+      int leftVibrationSpeed, int rightVibrationSpeed) {
+    Pointer<XINPUT_VIBRATION> vibration = calloc<XINPUT_VIBRATION>();
+    ZeroMemory(vibration, sizeOf<XINPUT_VIBRATION>());
+
+    vibration.ref.wLeftMotorSpeed = leftVibrationSpeed;
+    vibration.ref.wRightMotorSpeed = rightVibrationSpeed;
+
+    return vibration;
   }
 
   static Stream<Pointer<XINPUT_STATE>> streamState(int controllerIndex) async* {

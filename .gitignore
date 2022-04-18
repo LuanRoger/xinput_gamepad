@@ -3,7 +3,7 @@
 **.packages
 
 #IDEs directoryes
-**/idea
+**/.idea
 
 #VS Code
 .vscode/

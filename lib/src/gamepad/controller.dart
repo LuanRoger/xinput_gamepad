@@ -72,6 +72,14 @@ class Controller {
   ///```
   Map<ControllerButton, Function>? buttonsMapping;
 
+  ///Set a new ```buttonMapping``` from ```variantsButtonsMapping``` mapping list.
+  set buttonsFromMappingList(int mappingIndex) {
+    buttonsMapping = variantsButtonsMapping?[mappingIndex];
+  }
+
+  ///List of variant buttons mappings.
+  List<Map<ControllerButton, Function>>? variantsButtonsMapping;
+
   ///Set the initial mapping of the controller's variable buttons.
   ///```dart
   ///controller.variableKeysMapping = {
@@ -82,6 +90,14 @@ class Controller {
   ///};
   ///```
   Map<VariableControllerKey, Function(int value)>? variableKeysMapping;
+
+  ///Set a new ```variableKeysMapping``` from ```variantsVariableKeyMapping``` mapping list.
+  set variableKeyFromMappingList(int mappingIndex) {
+    variableKeysMapping = variantsVariableKeyMapping?[mappingIndex];
+  }
+
+  List<Map<VariableControllerKey, Function(int value)>>?
+      variantsVariableKeyMapping;
 
   //Events
   ///Occurs when a controller's button is realeased.
@@ -95,11 +111,12 @@ class Controller {
   //Vibration
   //Available range: 0-65535
   ///Set the speed of the vibartion of the left motor.
+  ///Available range: 0-65535
   int leftVibrationSpeed;
 
   ///Set the speed of the vibration of the right motor.
+  ///Available range: 0-65535
   int rightVibrationSpeed;
-  late Pointer<XINPUT_VIBRATION> _vibration;
 
   //Deadzone
   ///Set the deadzone of the controllers's left thumb.
@@ -117,7 +134,9 @@ class Controller {
   Controller(
       {required this.index,
       this.buttonsMapping,
+      this.variantsButtonsMapping,
       this.variableKeysMapping,
+      this.variantsVariableKeyMapping,
       this.onReleaseButton,
       this.buttonMode = ButtonMode.PRESS,
       this.leftVibrationSpeed = 16000,
@@ -125,16 +144,11 @@ class Controller {
       this.leftThumbDeadzone = 7849,
       this.rightThumbDeadzone = 8689,
       this.triggersDeadzone = 30}) {
-    //Set capabilities
-    final Pointer<XINPUT_CAPABILITIES> tempCapabilities =
-        ControllerUtils.getCapabilities(index);
-    _capababilities = ControllerCapababilities(tempCapabilities.ref);
-
-    free(tempCapabilities);
-
-    //Set initial battery info
+    _updateCapabilities();
     updateBatteryInfo();
   }
+
+  bool _isValid() => ControllerUtils.isConnected(index);
 
   StreamSubscription? _controllerListenerSubscription;
 
@@ -160,25 +174,20 @@ class Controller {
   ///
   ///```duration``` - Duration of how long the controller will be vibrating.
   Future vibrate(Duration duration) async {
-    _setVibration();
-    XInputSetState(index, _vibration);
+    if (!_isValid()) return;
+
+    Pointer<XINPUT_VIBRATION> vibration =
+        ControllerUtils.getControllerVibration(
+            leftVibrationSpeed, rightVibrationSpeed);
+    XInputSetState(index, vibration);
 
     await Future.delayed(
         duration,
         (() => {
-              ZeroMemory(_vibration, sizeOf<XINPUT_VIBRATION>()),
-              XInputSetState(index, _vibration),
-              free(_vibration)
+              ZeroMemory(vibration, sizeOf<XINPUT_VIBRATION>()),
+              XInputSetState(index, vibration),
+              free(vibration)
             }));
-  }
-
-  ///Update the actual battery information in ```batteryInformation```.
-  void updateBatteryInfo() {
-    final Pointer<XINPUT_BATTERY_INFORMATION> tempBatteryInfo =
-        ControllerUtils.getBatteryInformation(index);
-    _batteryInformation = ControllerBattery(tempBatteryInfo.ref);
-
-    free(tempBatteryInfo);
   }
 
   ControllerButton? _lastButtonPressed;
@@ -248,14 +257,20 @@ class Controller {
     });
   }
 
-  bool _isValid() => ControllerUtils.isConnected(index);
-  void _setVibration() {
-    if (!_isValid()) return;
+  ///Update the actual battery information in ```batteryInformation```.
+  void updateBatteryInfo() {
+    final Pointer<XINPUT_BATTERY_INFORMATION> tempBatteryInfo =
+        ControllerUtils.getBatteryInformation(index);
+    _batteryInformation = ControllerBattery(tempBatteryInfo.ref);
 
-    _vibration = calloc<XINPUT_VIBRATION>();
-    ZeroMemory(_vibration, sizeOf<XINPUT_VIBRATION>());
+    free(tempBatteryInfo);
+  }
 
-    _vibration.ref.wLeftMotorSpeed = leftVibrationSpeed;
-    _vibration.ref.wRightMotorSpeed = rightVibrationSpeed;
+  void _updateCapabilities() {
+    final Pointer<XINPUT_CAPABILITIES> tempCapabilities =
+        ControllerUtils.getCapabilities(index);
+    _capababilities = ControllerCapababilities(tempCapabilities.ref);
+
+    free(tempCapabilities);
   }
 }
