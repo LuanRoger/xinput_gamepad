@@ -1,2 +1,2 @@
-///Battery levels of the controller.
+///Controller's battery levels.
 enum BatteryLevel { EMPTY, LOW, MEDIUM, FULL, UNKNOWN }

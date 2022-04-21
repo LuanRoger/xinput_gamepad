@@ -1,6 +1,10 @@
+## 0.0.8
+- Documentation in-code updated.
+- Rename files and some classes.
+
 ## 0.0.7
-- Add mapping list to switch between them at runtime
-- ```getIndexConnectedControllers``` moved to ```ControllersManager```
+- Add mapping list to switch between them at runtime.
+- ```getIndexConnectedControllers``` moved to ```ControllersManager```.
 
 ## 0.0.6
 - Documentation in code created.

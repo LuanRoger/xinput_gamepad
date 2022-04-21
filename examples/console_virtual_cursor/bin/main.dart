@@ -10,7 +10,7 @@ void main(List<String> arguments) {
 
   for (int controllerIndex
       in ControllersManager.getIndexConnectedControllers()) {
-    Controller controller = Controller(index: controllerIndex);
+    final Controller controller = Controller(index: controllerIndex);
     controller.variableKeysMapping = {
       VariableControllerKey.THUMB_LX: (value) {
         if (value == 0) return;

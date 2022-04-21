@@ -5,7 +5,8 @@ void main(List<String> arguments) {
   XInputManager.enableXInput();
 
   List<Controller> availableControllers = List.empty(growable: true);
-  for (int controllerIndex in ControllersManager.getIndexConnectedControllers()) {
+  for (int controllerIndex
+      in ControllersManager.getIndexConnectedControllers()) {
     final Controller controller =
         Controller(index: controllerIndex, buttonMode: ButtonMode.PRESS);
     controller.buttonsMapping = {

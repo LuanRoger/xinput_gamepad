@@ -9,7 +9,7 @@ import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
-///Used to simulate events using the controller with XInput.
+///Used to simulate events using a XInput controller.
 ///
 ///```dart
 ///final Controller controller = Controller(index: controllerIndex);
@@ -23,7 +23,7 @@ class Controller {
   final ButtonMode buttonMode;
 
   //Controller state
-  ///The functional state of the control.
+  ///Get the actual state of the controller.
   ///
   ///If true, the controller is running and listening inputs.
   ///If false, controller isn't listening inputs.
@@ -32,7 +32,7 @@ class Controller {
         ? false
         : !_controllerListenerSubscription!.isPaused;
   }
-
+  ///Set the state of the controller.
   set activated(bool value) {
     value
         ? _controllerListenerSubscription?.resume()
@@ -96,6 +96,7 @@ class Controller {
     variableKeysMapping = variantsVariableKeyMapping?[mappingIndex];
   }
 
+  ///List of variant variable buttons mappigns.
   List<Map<VariableControllerKey, Function(int value)>>?
       variantsVariableKeyMapping;
 
@@ -129,7 +130,7 @@ class Controller {
   int triggersDeadzone;
 
   ///Instantiate a new ```Controller```.
-  ///Set a initial controller index than can be retrived from ```XInputManager```
+  ///Set a initial controller index than can be retrived from ```ControllersManager```
   ///and use to initialize a new controller.
   Controller(
       {required this.index,

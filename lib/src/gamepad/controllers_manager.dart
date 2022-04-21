@@ -2,7 +2,7 @@ import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 import 'package:xinput_gamepad/src/gamepad/controller.dart';
 
-///Manage multiple controls simultaneously.
+///Manage multiple controllers simultaneously.
 class ControllersManager {
   ///List of controller than will affected by the manager.
   List<Controller> controllers;
@@ -11,7 +11,7 @@ class ControllersManager {
   ControllersManager(this.controllers);
 
   ///Instatiate a new ```ControllersManager``` with all connected controllers has added.
-  factory ControllersManager.getAllControllers() {
+  factory ControllersManager.withAllControllers() {
     List<int> connectedControllers =
         ControllerUtils.getIndexConnectedControllers();
 

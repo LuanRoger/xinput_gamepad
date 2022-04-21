@@ -13,7 +13,7 @@ export 'src/enums/controller_flag.dart';
 export 'src/enums/controller_subtype.dart';
 export 'src/enums/controller_type.dart';
 
-export 'src/enums/variable_key.dart';
+export 'src/enums/variable_controller_key.dart';
 export 'src/enums/keyboard_key.dart';
 
 export 'src/enums/mouse_button.dart';

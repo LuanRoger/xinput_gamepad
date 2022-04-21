@@ -1,6 +1,6 @@
 name: xinput_gamepad
 description: Add support to XInput controllers.
-version: 0.0.7
+version: 0.0.8
 platforms:
   windows:
 
