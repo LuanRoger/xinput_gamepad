@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
                 Consumer<HomePageController>(builder: (context, value, _) {
                   return DropdownButton<int>(
                       value: value.controller.index,
-                      items: XInputManager.getIndexConnectedControllers()
+                      items: ControllersManager.getIndexConnectedControllers()
                           .map((index) => DropdownMenuItem(
                                 value: index,
                                 child: Text(index.toString()),

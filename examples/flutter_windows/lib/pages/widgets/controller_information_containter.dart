@@ -243,7 +243,8 @@ class _ControllerInformationContainterState
             Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           ControllerStateChip(
             "Controller ${widget.index}",
-            XInputManager.getIndexConnectedControllers().contains(widget.index),
+            ControllersManager.getIndexConnectedControllers()
+                .contains(widget.index),
             color: widget.color,
           ),
           Text(

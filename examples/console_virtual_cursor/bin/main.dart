@@ -8,7 +8,8 @@ void main(List<String> arguments) {
 
   List<Controller> availableControllers = List.empty(growable: true);
 
-  for (int controllerIndex in XInputManager.getIndexConnectedControllers()) {
+  for (int controllerIndex
+      in ControllersManager.getIndexConnectedControllers()) {
     Controller controller = Controller(index: controllerIndex);
     controller.variableKeysMapping = {
       VariableControllerKey.THUMB_LX: (value) {
