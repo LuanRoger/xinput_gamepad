@@ -1,19 +1,33 @@
 # xinput_gamepad
 ### Add support to XInput controllers with Win32 API.
+![badge_version](https://img.shields.io/pub/v/xinput_gamepad)
+![badge_license](https://img.shields.io/github/license/LuanRoger/xinput_gamepad)
+![badge_sdk](https://img.shields.io/badge/sdk-dart%20%7C%20flutter-blue)
+![badge_platform](https://img.shields.io/badge/platform-windows-blue)
 
 ## Dependencies
 - [win32](https://pub.dev/packages/win32)
+- [ffi](https://pub.dev/packages/ffi)
 
 ## Features
 - Handle controller inputs easily;
 - Get controllers information (Battery type, battery level, controller type and more);
 - Get connected controllers;
+- Set more than one button mapping per controller;
 - Set input lag and controller's deadzone;
 - Set and use controller's vibration motor;
 - Simulate keyboard and mouse inputs with controller;
 
 ## Instalation
-*Not available*
+With Dart
+```powershell
+dart pub add xinput_gamepad
+```
+With Flutter
+```powershell
+flutter pub add xinput_gamepad
+```
+See more in [install section](https://pub.dev/packages/xinput_gamepad/install)
 
 ## Simple example
 Enable XInput:
@@ -41,15 +55,7 @@ You can get the indexes of the available/connected controllers with:
 ```dart
 XInputManager.getIndexConnectedControllers();
 ```
-
-See all the examples:
-| Name | Description |
-|------|-------------|
-| [console](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/console) | Get controller inputs and show what button is pressed. |
-| [console_virtual_cursor](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/console_virtual_cursor) | Controll the cursor and use the mouse's buttons and wheel. |
-| [flutter_windwos](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/flutter_windows) | Shows what button is pressed in each connected controller and the thumbs and triggers variation. |
-| [flutter_virutal_keyboard](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/flutter_virtual_keyboard) | Map each keyboard key to controller handler. |
-> See examples ready-to-run [here](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples/pre_builded_examples)
+See all practical examples [here](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples)
 
 ## Documentation
-*Soon*
+Access the documentation [here](https://github.com/LuanRoger/xinput_gamepad/wiki)
