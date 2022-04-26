@@ -32,6 +32,7 @@ class Controller {
         ? false
         : !_controllerListenerSubscription!.isPaused;
   }
+
   ///Set the state of the controller.
   set activated(bool value) {
     value
@@ -156,7 +157,7 @@ class Controller {
   ///Start to listen inputs from the controller.
   void lister() async {
     final controllerStateStream = ControllerUtils.streamState(index)
-        .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
+    .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
 
     _controllerListenerSubscription = controllerStateStream.listen((event) {
       _dwPacketNumber = event.ref.dwPacketNumber;
@@ -168,27 +169,8 @@ class Controller {
       free(event);
     }, onError: (error) {
       print("A error occurs: $error");
-    }, cancelOnError: false);
-  }
-
-  ///Vibrate the controller based on the values defined in ```leftVibrationSpeed``` and ```rightVibrationSpeed```.
-  ///
-  ///```duration``` - Duration of how long the controller will be vibrating.
-  Future vibrate(Duration duration) async {
-    if (!_isValid()) return;
-
-    Pointer<XINPUT_VIBRATION> vibration =
-        ControllerUtils.getControllerVibration(
-            leftVibrationSpeed, rightVibrationSpeed);
-    XInputSetState(index, vibration);
-
-    await Future.delayed(
-        duration,
-        (() => {
-              ZeroMemory(vibration, sizeOf<XINPUT_VIBRATION>()),
-              XInputSetState(index, vibration),
-              free(vibration)
-            }));
+    }, 
+    cancelOnError: false);
   }
 
   ControllerButton? _lastButtonPressed;
@@ -256,6 +238,26 @@ class Controller {
           break;
       }
     });
+  }
+
+  ///Vibrate the controller based on the values defined in ```leftVibrationSpeed``` and ```rightVibrationSpeed```.
+  ///
+  ///```duration``` - Duration of how long the controller will be vibrating.
+  Future vibrate(Duration duration) async {
+    if (!_isValid()) return;
+
+    Pointer<XINPUT_VIBRATION> vibration =
+        ControllerUtils.getControllerVibration(
+            leftVibrationSpeed, rightVibrationSpeed);
+    XInputSetState(index, vibration);
+
+    await Future.delayed(
+        duration,
+        (() => {
+              ZeroMemory(vibration, sizeOf<XINPUT_VIBRATION>()),
+              XInputSetState(index, vibration),
+              free(vibration)
+            }));
   }
 
   ///Update the actual battery information in ```batteryInformation```.

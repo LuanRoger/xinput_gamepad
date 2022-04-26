@@ -80,6 +80,8 @@ class KeyboardKeyEnumConverter {
         return VK_RETURN;
       case KeyboardKey.ERASE_EOF:
         return 249; //VK_EREOF
+      case KeyboardKey.ESCAPE:
+        return VK_ESCAPE;
       case KeyboardKey.EXECUTE:
         return VK_EXECUTE;
       case KeyboardKey.EXSEL:

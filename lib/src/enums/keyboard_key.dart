@@ -41,6 +41,7 @@ enum KeyboardKey {
   END,
   ENTER,
   ERASE_EOF,
+  ESCAPE,
   EXECUTE,
   EXSEL,
   F,

@@ -1,3 +1,7 @@
+## 1.0.0
+- Update README.
+- Add ESCAPE keyboard's key.
+
 ## 0.0.8
 - Documentation in-code updated.
 - Rename files and some classes.
