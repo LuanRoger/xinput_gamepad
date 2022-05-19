@@ -53,7 +53,7 @@ controller.lister();
 ```
 You can get the indexes of the available/connected controllers with:
 ```dart
-XInputManager.getIndexConnectedControllers();
+ControllersManager.getIndexConnectedControllers();
 ```
 See all practical examples [here](https://github.com/LuanRoger/xinput_gamepad/tree/main/examples)
 
