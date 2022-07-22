@@ -1,3 +1,7 @@
+## 1.0.1
+- Update dependencies version.
+- Remove examples.
+
 ## 1.0.0
 - Update README.
 - Add ESCAPE keyboard's key.
