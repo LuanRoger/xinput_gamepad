@@ -14,11 +14,3 @@ export 'src/enums/controller_subtype.dart';
 export 'src/enums/controller_type.dart';
 
 export 'src/enums/variable_controller_key.dart';
-export 'src/enums/keyboard_key.dart';
-
-export 'src/enums/mouse_button.dart';
-export 'src/enums/mouse_variable_button.dart';
-export 'src/enums/mouse_axis.dart';
-
-export 'src/virtual_controllers/virutal_keyboard.dart';
-export 'src/virtual_controllers/virtual_cursor.dart';
