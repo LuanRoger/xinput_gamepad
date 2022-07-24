@@ -1,3 +1,7 @@
+## 1.1.0
+- [BREAKING CHANGE] Remove virtual_keyboard
+- [BREAKING CHANGE] Remove virtual_cursor
+
 ## 1.0.1
 - Update dependencies version.
 - Remove examples.

@@ -16,7 +16,6 @@
 - Set more than one button mapping per controller;
 - Set input lag and controller's deadzone;
 - Set and use controller's vibration motor;
-- Simulate keyboard and mouse inputs with controller;
 
 ## Instalation
 With Dart
