@@ -109,6 +109,7 @@ class Controller {
   ///controller.onReleaseButton = (button) => print("$button has ben released");
   ///```
   Function(ControllerButton button)? onReleaseButton;
+  Function(int bitmask)? onRawButtonEvent;
 
   //Vibration
   //Available range: 0-65535
@@ -140,6 +141,7 @@ class Controller {
       this.variableKeysMapping,
       this.variantsVariableKeyMapping,
       this.onReleaseButton,
+      this.onRawButtonEvent,
       this.buttonMode = ButtonMode.PRESS,
       this.leftVibrationSpeed = 16000,
       this.rightVibrationSpeed = 16000,
@@ -163,7 +165,11 @@ class Controller {
       _dwPacketNumber = event.ref.dwPacketNumber;
       _lastGamepadValidState = event.ref.Gamepad;
 
-      _buttonsReact();
+      if (onRawButtonEvent != null) {
+        onRawButtonEvent?.call(_lastGamepadValidState.wButtons);
+      } else {
+        _buttonsReact();
+      }
       _thumbsTriggersReact();
 
       free(event);
