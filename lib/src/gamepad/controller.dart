@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'package:win32/win32.dart';
-import 'package:ffi/ffi.dart';
 import 'dart:math';
+
+import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
-import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
+import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 ///Used to simulate events using a XInput controller.
@@ -155,9 +155,9 @@ class Controller {
   StreamSubscription? _controllerListenerSubscription;
 
   ///Start to listen inputs from the controller.
-  void lister() async {
+  void listen() async {
     final controllerStateStream = ControllerUtils.streamState(index)
-    .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
+        .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
 
     _controllerListenerSubscription = controllerStateStream.listen((event) {
       _dwPacketNumber = event.ref.dwPacketNumber;
@@ -169,8 +169,7 @@ class Controller {
       free(event);
     }, onError: (error) {
       print("A error occurs: $error");
-    }, 
-    cancelOnError: false);
+    }, cancelOnError: false);
   }
 
   ControllerButton? _lastButtonPressed;

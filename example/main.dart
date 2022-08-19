@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 void main(List<String> arguments) {
@@ -75,6 +76,6 @@ void main(List<String> arguments) {
   }
 
   for (Controller controller in availableControllers) {
-    controller.lister();
+    controller.listen();
   }
 }
