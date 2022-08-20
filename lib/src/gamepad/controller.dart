@@ -178,31 +178,36 @@ class Controller {
     }, cancelOnError: false);
   }
 
-  ControllerButton? _lastButtonPressed;
+  int? _lastButtonsBitmask;
   void _buttonsReact() {
-    final ControllerButton? button =
-        InputBitmaskConverter.convertButton(_lastGamepadValidState.wButtons);
+    int buttonBitmask = _lastGamepadValidState.wButtons;
+    final List<ControllerButton>? buttons =
+        InputBitmaskConverter.convertButton(buttonBitmask);
 
     buttonsMapping?.forEach((mapedButtons, action) {
       //The button pressed is different than last.
       //This means the button has been released.
-      if (_lastButtonPressed != null && button != _lastButtonPressed) {
-        onReleaseButton?.call(_lastButtonPressed!);
-        _lastButtonPressed = null;
+      if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
+        ControllerButton releasedButton =
+            InputBitmaskConverter.convertButton(_lastButtonsBitmask!)!.first;
+        onReleaseButton?.call(releasedButton);
+        _lastButtonsBitmask = null;
       }
 
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (_lastButtonPressed == null && button == mapedButtons) {
-            _lastButtonPressed = button;
+          if (_lastButtonsBitmask == null &&
+              buttons != null &&
+              buttons.contains(mapedButtons)) {
+            _lastButtonsBitmask = buttonBitmask;
             action();
           }
           break;
         case ButtonMode.HOLD:
           //No matter if the last state's button is the same than this.
-          if (button == mapedButtons) {
-            _lastButtonPressed = button;
+          if (buttons != null && buttons.contains(mapedButtons)) {
+            _lastButtonsBitmask = buttonBitmask;
             action();
           }
           break;
