@@ -181,43 +181,52 @@ class Controller {
 
   int? _lastButtonsBitmask;
   void _buttonsReact() {
+    if (buttonsMapping == null) return;
+
     int buttonBitmask = _lastGamepadValidState.wButtons;
-    final List<ControllerButton>? buttons =
+
+    //Check release button
+    if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
+      ControllerButton releasedButton = InputBitmaskConverter.convertButton(
+              _lastButtonsBitmask! - buttonBitmask)!
+          .first;
+      onReleaseButton?.call(releasedButton);
+
+      _lastButtonsBitmask = buttonBitmask == 0 ? null : buttonBitmask;
+    }
+
+    List<ControllerButton>? buttons =
         InputBitmaskConverter.convertButton(buttonBitmask);
+    if (buttons == null) return;
 
-    buttonsMapping?.forEach((mapedButton, action) {
-      //The button pressed is different than last.
-      //This means the button has been released.
-      if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
-        ControllerButton releasedButton = InputBitmaskConverter.convertButton(
-                _lastButtonsBitmask! - buttonBitmask)!
-            .first;
-        onReleaseButton?.call(releasedButton);
+    List<Function> pressMappedButtonsFucntion = List.empty(growable: true);
+    bool isMultiPress =
+        _lastButtonsBitmask != null && buttonBitmask > _lastButtonsBitmask!;
+    if (isMultiPress) {
+      var newButtons = InputBitmaskConverter.convertButton(
+          buttonBitmask - _lastButtonsBitmask!)!;
+      buttons = buttons.getContains(newButtons);
+    }
+    for (ControllerButton button in buttons) {
+      pressMappedButtonsFucntion.add(buttonsMapping![button]!);
+    }
 
-        _lastButtonsBitmask = buttonBitmask == 0 ? null : buttonBitmask;
-      }
-
-      bool isMapped = buttons != null && buttons.contains(mapedButton);
-      bool isMultiPress = _lastButtonsBitmask != null &&
-          buttonBitmask > _lastButtonsBitmask! &&
-          isMapped;
+    for (Function pressAction in pressMappedButtonsFucntion) {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (isMultiPress || _lastButtonsBitmask == null && isMapped) {
+          if (isMultiPress || _lastButtonsBitmask == null) {
             _lastButtonsBitmask = buttonBitmask;
-            action();
+            pressAction();
           }
           break;
         case ButtonMode.HOLD:
           //No matter if the last state's button is the same than this.
-          if (isMapped) {
-            _lastButtonsBitmask = buttonBitmask;
-            action();
-          }
+          _lastButtonsBitmask = buttonBitmask;
+          pressAction();
           break;
       }
-    });
+    }
   }
 
   void _thumbsTriggersReact() {
