@@ -8,6 +8,7 @@ import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
 import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
+import 'package:xinput_gamepad/src/utils/controller_list_utils.dart';
 
 ///Used to simulate events using a XInput controller.
 ///
@@ -184,29 +185,33 @@ class Controller {
     final List<ControllerButton>? buttons =
         InputBitmaskConverter.convertButton(buttonBitmask);
 
-    buttonsMapping?.forEach((mapedButtons, action) {
+    buttonsMapping?.forEach((mapedButton, action) {
       //The button pressed is different than last.
       //This means the button has been released.
       if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
-        ControllerButton releasedButton =
-            InputBitmaskConverter.convertButton(_lastButtonsBitmask!)!.first;
+        ControllerButton releasedButton = InputBitmaskConverter.convertButton(
+                _lastButtonsBitmask! - buttonBitmask)!
+            .first;
         onReleaseButton?.call(releasedButton);
-        _lastButtonsBitmask = null;
+
+        _lastButtonsBitmask = buttonBitmask == 0 ? null : buttonBitmask;
       }
 
+      bool isMapped = buttons != null && buttons.contains(mapedButton);
+      bool isMultiPress = _lastButtonsBitmask != null &&
+          buttonBitmask > _lastButtonsBitmask! &&
+          isMapped;
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (_lastButtonsBitmask == null &&
-              buttons != null &&
-              buttons.contains(mapedButtons)) {
+          if (isMultiPress || _lastButtonsBitmask == null && isMapped) {
             _lastButtonsBitmask = buttonBitmask;
             action();
           }
           break;
         case ButtonMode.HOLD:
           //No matter if the last state's button is the same than this.
-          if (buttons != null && buttons.contains(mapedButtons)) {
+          if (isMapped) {
             _lastButtonsBitmask = buttonBitmask;
             action();
           }
