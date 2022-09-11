@@ -229,7 +229,7 @@ class _ControllerInformationContainterState
       }
     };
 
-    controller.lister();
+    controller.listen();
     super.initState();
   }
 

@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:ffi';
-import 'package:win32/win32.dart';
-import 'package:ffi/ffi.dart';
 import 'dart:math';
+
+import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
-import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
+import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 
 ///Used to simulate events using a XInput controller.
@@ -109,6 +109,7 @@ class Controller {
   ///controller.onReleaseButton = (button) => print("$button has ben released");
   ///```
   Function(ControllerButton button)? onReleaseButton;
+  Function(int bitmask)? onRawButtonEvent;
 
   //Vibration
   //Available range: 0-65535
@@ -140,6 +141,7 @@ class Controller {
       this.variableKeysMapping,
       this.variantsVariableKeyMapping,
       this.onReleaseButton,
+      this.onRawButtonEvent,
       this.buttonMode = ButtonMode.PRESS,
       this.leftVibrationSpeed = 16000,
       this.rightVibrationSpeed = 16000,
@@ -155,49 +157,57 @@ class Controller {
   StreamSubscription? _controllerListenerSubscription;
 
   ///Start to listen inputs from the controller.
-  void lister() async {
+  void listen() async {
     final controllerStateStream = ControllerUtils.streamState(index)
-    .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
+        .where((event) => _dwPacketNumber != event.ref.dwPacketNumber);
 
     _controllerListenerSubscription = controllerStateStream.listen((event) {
       _dwPacketNumber = event.ref.dwPacketNumber;
       _lastGamepadValidState = event.ref.Gamepad;
 
-      _buttonsReact();
+      if (onRawButtonEvent != null) {
+        onRawButtonEvent?.call(_lastGamepadValidState.wButtons);
+      } else {
+        _buttonsReact();
+      }
       _thumbsTriggersReact();
 
       free(event);
     }, onError: (error) {
       print("A error occurs: $error");
-    }, 
-    cancelOnError: false);
+    }, cancelOnError: false);
   }
 
-  ControllerButton? _lastButtonPressed;
+  int? _lastButtonsBitmask;
   void _buttonsReact() {
-    final ControllerButton? button =
-        InputBitmaskConverter.convertButton(_lastGamepadValidState.wButtons);
+    int buttonBitmask = _lastGamepadValidState.wButtons;
+    final List<ControllerButton>? buttons =
+        InputBitmaskConverter.convertButton(buttonBitmask);
 
     buttonsMapping?.forEach((mapedButtons, action) {
       //The button pressed is different than last.
       //This means the button has been released.
-      if (_lastButtonPressed != null && button != _lastButtonPressed) {
-        onReleaseButton?.call(_lastButtonPressed!);
-        _lastButtonPressed = null;
+      if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
+        ControllerButton releasedButton =
+            InputBitmaskConverter.convertButton(_lastButtonsBitmask!)!.first;
+        onReleaseButton?.call(releasedButton);
+        _lastButtonsBitmask = null;
       }
 
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (_lastButtonPressed == null && button == mapedButtons) {
-            _lastButtonPressed = button;
+          if (_lastButtonsBitmask == null &&
+              buttons != null &&
+              buttons.contains(mapedButtons)) {
+            _lastButtonsBitmask = buttonBitmask;
             action();
           }
           break;
         case ButtonMode.HOLD:
           //No matter if the last state's button is the same than this.
-          if (button == mapedButtons) {
-            _lastButtonPressed = button;
+          if (buttons != null && buttons.contains(mapedButtons)) {
+            _lastButtonsBitmask = buttonBitmask;
             action();
           }
           break;

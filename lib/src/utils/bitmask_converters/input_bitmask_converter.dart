@@ -2,56 +2,52 @@ import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/enums/controller_button.dart';
 
 class InputBitmaskConverter {
-  static ControllerButton? convertButton(int bitmask) {
-    ControllerButton? button;
+  static List<ControllerButton>? convertButton(int bitmask) {
+    List<ControllerButton>? buttons = List.empty(growable: true);
 
-    switch (bitmask) {
-      case XINPUT_GAMEPAD_DPAD_UP:
-        button = ControllerButton.DPAD_UP;
-        break;
-      case XINPUT_GAMEPAD_DPAD_DOWN:
-        button = ControllerButton.DPAD_DOWN;
-        break;
-      case XINPUT_GAMEPAD_DPAD_LEFT:
-        button = ControllerButton.DPAD_LEFT;
-        break;
-      case XINPUT_GAMEPAD_DPAD_RIGHT:
-        button = ControllerButton.DPAD_RIGHT;
-        break;
-      case XINPUT_GAMEPAD_START:
-        button = ControllerButton.START;
-        break;
-      case XINPUT_GAMEPAD_BACK:
-        button = ControllerButton.BACK;
-        break;
-      case XINPUT_GAMEPAD_LEFT_THUMB:
-        button = ControllerButton.LEFT_THUMB;
-        break;
-      case XINPUT_GAMEPAD_RIGHT_THUMB:
-        button = ControllerButton.RIGHT_THUMB;
-        break;
-      case XINPUT_GAMEPAD_LEFT_SHOULDER:
-        button = ControllerButton.LEFT_SHOULDER;
-        break;
-      case XINPUT_GAMEPAD_RIGHT_SHOULDER:
-        button = ControllerButton.RIGHT_SHOULDER;
-        break;
-      case XINPUT_GAMEPAD_A:
-        button = ControllerButton.A_BUTTON;
-        break;
-      case XINPUT_GAMEPAD_B:
-        button = ControllerButton.B_BUTTON;
-        break;
-      case XINPUT_GAMEPAD_X:
-        button = ControllerButton.X_BUTTON;
-        break;
-      case XINPUT_GAMEPAD_Y:
-        button = ControllerButton.Y_BUTTON;
-        break;
-      default:
-        button = null;
+    if (bitmask & XINPUT_GAMEPAD_DPAD_UP > 0) {
+      buttons.add(ControllerButton.DPAD_UP);
+    }
+    if (bitmask & XINPUT_GAMEPAD_DPAD_DOWN > 0) {
+      buttons.add(ControllerButton.DPAD_DOWN);
+    }
+    if (bitmask & XINPUT_GAMEPAD_DPAD_LEFT > 0) {
+      buttons.add(ControllerButton.DPAD_LEFT);
+    }
+    if (bitmask & XINPUT_GAMEPAD_DPAD_RIGHT > 0) {
+      buttons.add(ControllerButton.DPAD_RIGHT);
+    }
+    if (bitmask & XINPUT_GAMEPAD_START > 0) {
+      buttons.add(ControllerButton.START);
+    }
+    if (bitmask & XINPUT_GAMEPAD_BACK > 0) {
+      buttons.add(ControllerButton.BACK);
+    }
+    if (bitmask & XINPUT_GAMEPAD_LEFT_THUMB > 0) {
+      buttons.add(ControllerButton.LEFT_THUMB);
+    }
+    if (bitmask & XINPUT_GAMEPAD_RIGHT_THUMB > 0) {
+      buttons.add(ControllerButton.RIGHT_THUMB);
+    }
+    if (bitmask & XINPUT_GAMEPAD_LEFT_SHOULDER > 0) {
+      buttons.add(ControllerButton.LEFT_SHOULDER);
+    }
+    if (bitmask & XINPUT_GAMEPAD_RIGHT_SHOULDER > 0) {
+      buttons.add(ControllerButton.RIGHT_SHOULDER);
+    }
+    if (bitmask & XINPUT_GAMEPAD_A > 0) {
+      buttons.add(ControllerButton.A_BUTTON);
+    }
+    if (bitmask & XINPUT_GAMEPAD_B > 0) {
+      buttons.add(ControllerButton.B_BUTTON);
+    }
+    if (bitmask & XINPUT_GAMEPAD_X > 0) {
+      buttons.add(ControllerButton.X_BUTTON);
+    }
+    if (bitmask & XINPUT_GAMEPAD_Y > 0) {
+      buttons.add(ControllerButton.Y_BUTTON);
     }
 
-    return button;
+    return buttons.isNotEmpty ? buttons : null;
   }
 }
