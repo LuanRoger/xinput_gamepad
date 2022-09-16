@@ -1,3 +1,8 @@
+## 1.2.0
+- Add ```Controller.onRawButtonEvent``` to use the raw controller bitmasks (Not documented).
+- Support to multiple buttons press per state.
+- [BREAKING CHANGE] Rename ```Controller.lister()``` to ```Controller.listen()```
+
 ## 1.1.0
 - [BREAKING CHANGE] Remove virtual_keyboard
 - [BREAKING CHANGE] Remove virtual_cursor
