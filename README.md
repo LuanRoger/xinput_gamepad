@@ -1,7 +1,7 @@
 # xinput_gamepad
 ### Add support to XInput controllers with Win32 API.
-![badge_version](https://img.shields.io/pub/v/xinput_gamepad)
-![badge_license](https://img.shields.io/github/license/LuanRoger/xinput_gamepad)
+[![badge_version](https://img.shields.io/pub/v/xinput_gamepad)](https://pub.dev/packages/xinput_gamepad)
+[![badge_license](https://img.shields.io/github/license/LuanRoger/xinput_gamepad)](https://github.com/LuanRoger/xinput_gamepad/blob/main/LICENSE)
 ![badge_sdk](https://img.shields.io/badge/sdk-dart%20%7C%20flutter-blue)
 ![badge_platform](https://img.shields.io/badge/platform-windows-blue)
 
@@ -48,7 +48,7 @@ controller.buttonsMapping = {
 };
 
 //Start to listen inputs
-controller.lister();
+controller.listen();
 ```
 You can get the indexes of the available/connected controllers with:
 ```dart
