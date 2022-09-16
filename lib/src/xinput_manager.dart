@@ -10,6 +10,7 @@ class XInputManager {
 
   ///Disable XInput.
   static void disableXInput() => XInputEnable(FALSE);
+
   ///Closes the COM library on the current thread,
   ///unloads all DLLs loaded by the thread,
   ///frees any other resources that the thread maintains.

@@ -6,18 +6,21 @@ import 'package:xinput_gamepad/src/utils/bitmask_converters/controller_capabilit
 
 class ControllerCapababilities {
   late ControllerType _type;
+
   ///Get the type of the controller.
   ControllerType get type {
     return _type;
   }
 
   late ControllerSubType _subType;
+
   ///Get the subtype of the controller.
   ControllerSubType get subType {
     return _subType;
   }
 
   late ControllerFlag _flags;
+
   ///Get the flags that indicate the features which are supported.
   ControllerFlag get flags {
     return _flags;

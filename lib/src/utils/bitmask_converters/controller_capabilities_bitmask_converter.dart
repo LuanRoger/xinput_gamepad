@@ -10,6 +10,7 @@ class ControllerCapabilitiesBitmaskConverter {
         return ControllerType.UNKNOWN;
     }
   }
+
   static ControllerSubType convertSubType(int bitmask) {
     switch (bitmask) {
       case XINPUT_DEVSUBTYPE_GAMEPAD:
@@ -37,6 +38,7 @@ class ControllerCapabilitiesBitmaskConverter {
         return ControllerSubType.UNKNOWN;
     }
   }
+
   static ControllerFlag convertFlag(int bitmask) {
     switch (bitmask) {
       case XINPUT_CAPS_VOICE_SUPPORTED:

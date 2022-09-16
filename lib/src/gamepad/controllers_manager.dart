@@ -29,6 +29,7 @@ class ControllersManager {
       controller.activated = false;
     }
   }
+
   ///Enable all controllers.
   void enableAll() {
     for (Controller controller in controllers) {
