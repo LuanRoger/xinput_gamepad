@@ -1,3 +1,8 @@
+## 1.2.1
+- Migrate enums to enhanced enums.
+- New SDK version required: '>=2.18.1 <3.0.0'.
+- [BREAKING CHANGE] Remove UNKNOWN enum from ControllerFlag, ControllerType and BatteryLevel.
+
 ## 1.2.0
 - Add ```Controller.onRawButtonEvent``` to use the raw controller bitmasks (Not documented).
 - Support to multiple buttons press per state.

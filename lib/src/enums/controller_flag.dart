@@ -1,7 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:win32/win32.dart';
-import 'package:collection/collection.dart';
 
 ///Flags that indicate the features which are supported.
 ///
@@ -29,9 +28,11 @@ enum ControllerFlag {
   const ControllerFlag(this.flagBitmask);
 
   factory ControllerFlag.fromBitmask(int bitmask) {
-    ControllerFlag? flag = ControllerFlag.values
-        .firstWhereOrNull((element) => element.flagBitmask == bitmask);
-
-    return flag ?? ControllerFlag.UNKNOWN;
+    try {
+      return ControllerFlag.values
+          .firstWhere((element) => element.flagBitmask == bitmask);
+    } catch (_) {
+      return ControllerFlag.UNKNOWN;
+    }
   }
 }
