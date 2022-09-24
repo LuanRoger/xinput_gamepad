@@ -1,3 +1,8 @@
+// ignore_for_file: constant_identifier_names
+
+import 'package:win32/win32.dart';
+import 'package:collection/collection.dart';
+
 ///Flags that indicate the features which are supported.
 ///
 ///UNKNOWN - Is unknown.
@@ -12,10 +17,21 @@
 ///
 ///NO_NAVIGATION - Device lacks menu navigation buttons (START, BACK, DPAD).
 enum ControllerFlag {
-  UNKNOWN,
-  VOICE_SUPPORTED,
-  FORCE_FEEDBACK_SUPPORTED,
-  WIRELESS,
-  PLUGIN_MODULES_SUPPORTED,
-  NO_NAVIGATION
+  VOICE_SUPPORTED(XINPUT_CAPS_VOICE_SUPPORTED),
+  FORCE_FEEDBACK_SUPPORTED(XINPUT_CAPS_FFB_SUPPORTED),
+  WIRELESS(XINPUT_CAPS_WIRELESS),
+  PLUGIN_MODULES_SUPPORTED(XINPUT_CAPS_PMD_SUPPORTED),
+  NO_NAVIGATION(XINPUT_CAPS_NO_NAVIGATION),
+  UNKNOWN(0);
+
+  final int flagBitmask;
+
+  const ControllerFlag(this.flagBitmask);
+
+  factory ControllerFlag.fromBitmask(int bitmask) {
+    ControllerFlag? flag = ControllerFlag.values
+        .firstWhereOrNull((element) => element.flagBitmask == bitmask);
+
+    return flag ?? ControllerFlag.UNKNOWN;
+  }
 }
