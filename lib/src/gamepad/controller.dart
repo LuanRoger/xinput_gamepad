@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:win32/win32.dart';
 import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
-import 'package:xinput_gamepad/src/utils/bitmask_converters/input_bitmask_converter.dart';
 import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 import 'package:xinput_gamepad/src/utils/controller_list_utils.dart';
@@ -74,7 +73,7 @@ class Controller {
   ///```
   Map<ControllerButton, Function>? buttonsMapping;
 
-  ///Set a new ```buttonMapping``` from ```variantsButtonsMapping``` mapping list.
+  ///Set a new [buttonMapping] from [variantsButtonsMapping] mapping list.
   set buttonsFromMappingList(int mappingIndex) {
     buttonsMapping = variantsButtonsMapping?[mappingIndex];
   }
@@ -93,7 +92,7 @@ class Controller {
   ///```
   Map<VariableControllerKey, Function(int value)>? variableKeysMapping;
 
-  ///Set a new ```variableKeysMapping``` from ```variantsVariableKeyMapping``` mapping list.
+  ///Set a new [variableKeysMapping] from [variantsVariableKeyMapping] mapping list.
   set variableKeyFromMappingList(int mappingIndex) {
     variableKeysMapping = variantsVariableKeyMapping?[mappingIndex];
   }
@@ -110,6 +109,10 @@ class Controller {
   ///controller.onReleaseButton = (button) => print("$button has ben released");
   ///```
   Function(ControllerButton button)? onReleaseButton;
+
+  ///Set a callback to retrieve and manipulate the raw button bitmask.
+  ///If this callback is not null, the bitmask will go through it and
+  /// the package's bitmask manipulation will not be used.
   Function(int bitmask)? onRawButtonEvent;
 
   //Vibration
@@ -132,8 +135,8 @@ class Controller {
   ///Set the deadzone of the controller's triggers.
   int triggersDeadzone;
 
-  ///Instantiate a new ```Controller```.
-  ///Set a initial controller index than can be retrived from ```ControllersManager```
+  ///Instantiate a new [Controller].
+  ///Set a initial controller index than can be retrived from [ControllersManager].
   ///and use to initialize a new controller.
   Controller(
       {required this.index,
@@ -187,7 +190,7 @@ class Controller {
 
     //Check release button
     if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
-      ControllerButton releasedButton = InputBitmaskConverter.convertButton(
+      ControllerButton releasedButton = ControllerButton.convertFromBitmask(
               _lastButtonsBitmask! - buttonBitmask)!
           .first;
       onReleaseButton?.call(releasedButton);
@@ -196,14 +199,14 @@ class Controller {
     }
 
     List<ControllerButton>? buttons =
-        InputBitmaskConverter.convertButton(buttonBitmask);
+        ControllerButton.convertFromBitmask(buttonBitmask);
     if (buttons == null) return;
 
     List<Function> pressMappedButtonsFucntion = List.empty(growable: true);
     bool isMultiPress =
         _lastButtonsBitmask != null && buttonBitmask > _lastButtonsBitmask!;
     if (isMultiPress) {
-      var newButtons = InputBitmaskConverter.convertButton(
+      var newButtons = ControllerButton.convertFromBitmask(
           buttonBitmask - _lastButtonsBitmask!)!;
       buttons = buttons.getContains(newButtons);
     }
@@ -264,9 +267,9 @@ class Controller {
     });
   }
 
-  ///Vibrate the controller based on the values defined in ```leftVibrationSpeed``` and ```rightVibrationSpeed```.
+  ///Vibrate the controller based on the values defined in [leftVibrationSpeed] and [rightVibrationSpeed].
   ///
-  ///```duration``` - Duration of how long the controller will be vibrating.
+  ///[duration] - Duration of how long the controller will be vibrating.
   Future vibrate(Duration duration) async {
     if (!_isValid()) return;
 

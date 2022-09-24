@@ -7,10 +7,10 @@ class ControllersManager {
   ///List of controller than will affected by the manager.
   List<Controller> controllers;
 
-  ///Instatiate a new ```ControllersManager```.
+  ///Instatiate a new [ControllersManager].
   ControllersManager(this.controllers);
 
-  ///Instatiate a new ```ControllersManager``` with all connected controllers has added.
+  ///Instatiate a new [ControllersManager] with all connected controllers has added.
   factory ControllersManager.withAllControllers() {
     List<int> connectedControllers =
         ControllerUtils.getIndexConnectedControllers();
