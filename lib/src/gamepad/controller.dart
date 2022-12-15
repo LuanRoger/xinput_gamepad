@@ -202,7 +202,7 @@ class Controller {
         ControllerButton.convertFromBitmask(buttonBitmask);
     if (buttons == null) return;
 
-    List<Function> pressMappedButtonsFucntion = List.empty(growable: true);
+    List<Function> pressMappedButtonsFunction = List.empty(growable: true);
     bool isMultiPress =
         _lastButtonsBitmask != null && buttonBitmask > _lastButtonsBitmask!;
     if (isMultiPress) {
@@ -211,10 +211,12 @@ class Controller {
       buttons = buttons.getContains(newButtons);
     }
     for (ControllerButton button in buttons) {
-      pressMappedButtonsFucntion.add(buttonsMapping![button]!);
+      if (buttonsMapping!.containsKey(button)) {
+        pressMappedButtonsFunction.add(buttonsMapping![button]!);
+      }
     }
 
-    for (Function pressAction in pressMappedButtonsFucntion) {
+    for (Function pressAction in pressMappedButtonsFunction) {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
