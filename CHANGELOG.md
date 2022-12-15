@@ -1,3 +1,6 @@
+## 1.2.2
+- Fix crash when press button that is not mapped.
+
 ## 1.2.1
 - Migrate enums to enhanced enums.
 - New SDK version required: '>=2.18.1 <3.0.0'.
