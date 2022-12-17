@@ -184,18 +184,18 @@ class Controller {
     }, cancelOnError: false);
   }
 
-  int? _lastButtonsBitmask;
+  int _lastButtonsBitmask = 0;
   void _buttonsReact() {
     if (buttonsMapping == null) return;
 
     int buttonBitmask = _lastGamepadValidState.wButtons;
 
     //Check release button
-    if (_lastButtonsBitmask == null && buttonBitmask == 0) return;
+    if (_lastButtonsBitmask == 0 && buttonBitmask == 0) return;
 
-    if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
+    if (buttonBitmask < _lastButtonsBitmask) {
       _releaseButton(buttonBitmask);
-      _lastButtonsBitmask = buttonBitmask == 0 ? null : buttonBitmask;
+      _lastButtonsBitmask = buttonBitmask;
     }
 
     _pressButton(buttonBitmask);
@@ -207,11 +207,10 @@ class Controller {
     if (buttons == null) return;
 
     List<Function> pressMappedButtonsFunction = List.empty(growable: true);
-    bool isMultiPress =
-        _lastButtonsBitmask != null && buttonBitmask > _lastButtonsBitmask!;
+    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
     if (isMultiPress) {
-      var newButtons = ControllerButton.convertFromBitmask(
-          buttonBitmask - _lastButtonsBitmask!)!;
+      final newButtons = ControllerButton.convertFromBitmask(
+          buttonBitmask - _lastButtonsBitmask)!;
       buttons = buttons.getContains(newButtons);
     }
 
@@ -225,7 +224,7 @@ class Controller {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (isMultiPress || _lastButtonsBitmask == null) {
+          if (_lastButtonsBitmask == 0 || isMultiPress) {
             _lastButtonsBitmask = buttonBitmask;
             pressAction();
           }
@@ -242,7 +241,7 @@ class Controller {
   void _releaseButton(int buttonBitmask) {
     List<ControllerButton>? releasedButton =
         ControllerButton.convertFromBitmask(
-            _lastButtonsBitmask! - (_lastButtonsBitmask! & buttonBitmask))!;
+            _lastButtonsBitmask - (_lastButtonsBitmask & buttonBitmask))!;
     if (releasedButton == null) return;
 
     //Filter to contains just mapped buttons
