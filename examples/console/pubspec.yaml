@@ -1,5 +1,5 @@
-name: xinput_gamepad_package_example
-description: Examples of xinput_gamepad package working.
+name: xinput_gamepad_console_example
+description: Examples of xinput_gamepad package working in a console application.
 version: 1.0.0
 
 environment:
