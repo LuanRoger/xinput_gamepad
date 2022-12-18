@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:async';
 import 'dart:ffi';
 import 'dart:math';
@@ -108,7 +110,7 @@ class Controller {
   ///```dart
   ///controller.onReleaseButton = (button) => print("$button has ben released");
   ///```
-  Function(ControllerButton button)? onReleaseButton;
+  Function(List<ControllerButton> button)? onReleaseButton;
 
   ///Set a callback to retrieve and manipulate the raw button bitmask.
   ///If this callback is not null, the bitmask will go through it and
@@ -182,34 +184,36 @@ class Controller {
     }, cancelOnError: false);
   }
 
-  int? _lastButtonsBitmask;
+  int _lastButtonsBitmask = 0;
   void _buttonsReact() {
     if (buttonsMapping == null) return;
 
     int buttonBitmask = _lastGamepadValidState.wButtons;
 
     //Check release button
-    if (_lastButtonsBitmask != null && buttonBitmask < _lastButtonsBitmask!) {
-      ControllerButton releasedButton = ControllerButton.convertFromBitmask(
-              _lastButtonsBitmask! - buttonBitmask)!
-          .first;
-      onReleaseButton?.call(releasedButton);
+    if (_lastButtonsBitmask == 0 && buttonBitmask == 0) return;
 
-      _lastButtonsBitmask = buttonBitmask == 0 ? null : buttonBitmask;
+    if (buttonBitmask < _lastButtonsBitmask) {
+      _releaseButton(buttonBitmask);
+      _lastButtonsBitmask = buttonBitmask;
     }
 
+    _pressButton(buttonBitmask);
+  }
+
+  void _pressButton(int buttonBitmask) {
     List<ControllerButton>? buttons =
         ControllerButton.convertFromBitmask(buttonBitmask);
     if (buttons == null) return;
 
     List<Function> pressMappedButtonsFunction = List.empty(growable: true);
-    bool isMultiPress =
-        _lastButtonsBitmask != null && buttonBitmask > _lastButtonsBitmask!;
+    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
     if (isMultiPress) {
-      var newButtons = ControllerButton.convertFromBitmask(
-          buttonBitmask - _lastButtonsBitmask!)!;
+      final newButtons = ControllerButton.convertFromBitmask(
+          buttonBitmask - _lastButtonsBitmask)!;
       buttons = buttons.getContains(newButtons);
     }
+
     for (ControllerButton button in buttons) {
       if (buttonsMapping!.containsKey(button)) {
         pressMappedButtonsFunction.add(buttonsMapping![button]!);
@@ -220,7 +224,7 @@ class Controller {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (isMultiPress || _lastButtonsBitmask == null) {
+          if (_lastButtonsBitmask == 0 || isMultiPress) {
             _lastButtonsBitmask = buttonBitmask;
             pressAction();
           }
@@ -232,6 +236,18 @@ class Controller {
           break;
       }
     }
+  }
+
+  void _releaseButton(int buttonBitmask) {
+    List<ControllerButton>? releasedButton =
+        ControllerButton.convertFromBitmask(
+            _lastButtonsBitmask - (_lastButtonsBitmask & buttonBitmask))!;
+    if (releasedButton == null) return;
+
+    //Filter to contains just mapped buttons
+    releasedButton = releasedButton.getContains(buttonsMapping!.keys.toList());
+
+    onReleaseButton?.call(releasedButton);
   }
 
   void _thumbsTriggersReact() {

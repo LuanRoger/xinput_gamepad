@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:win32/win32.dart';
+import 'package:collection/collection.dart';
 
 ///Subtype of the controller.
 ///See more: https://docs.microsoft.com/en-us/windows/win32/xinput/xinput-and-controller-subtypes
@@ -22,5 +23,5 @@ enum ControllerSubType {
   const ControllerSubType(this.subTypeBitmask);
 
   factory ControllerSubType.fromBitmask(int bitmask) => ControllerSubType.values
-      .firstWhere((element) => element.subTypeBitmask == bitmask);
+      .firstWhereOrNull((element) => element.subTypeBitmask == bitmask) ?? ControllerSubType.UNKNOWN;
 }

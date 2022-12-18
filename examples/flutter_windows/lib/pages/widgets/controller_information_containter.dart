@@ -44,78 +44,80 @@ class _ControllerInformationContainterState
   int leftTrigger = 0;
   int rightTrigger = 0;
 
-  void releaseButton(ControllerButton button) {
-    switch (button) {
-      case ControllerButton.A_BUTTON:
-        setState(() {
-          aButtonPressed = false;
-        });
-        break;
-      case ControllerButton.B_BUTTON:
-        setState(() {
-          bButtonPressed = false;
-        });
-        break;
-      case ControllerButton.X_BUTTON:
-        setState(() {
-          xButtonPressed = false;
-        });
-        break;
-      case ControllerButton.Y_BUTTON:
-        setState(() {
-          yButtonPressed = false;
-        });
-        break;
-      case ControllerButton.DPAD_DOWN:
-        setState(() {
-          dDownButtonPressed = false;
-        });
-        break;
-      case ControllerButton.DPAD_UP:
-        setState(() {
-          dUpButtonPressed = false;
-        });
-        break;
-      case ControllerButton.DPAD_LEFT:
-        setState(() {
-          dLeftButtonPressed = false;
-        });
-        break;
-      case ControllerButton.DPAD_RIGHT:
-        setState(() {
-          dRightButtonPressed = false;
-        });
-        break;
-      case ControllerButton.START:
-        setState(() {
-          startButtonPressed = false;
-        });
-        break;
-      case ControllerButton.BACK:
-        setState(() {
-          backButtonPressed = false;
-        });
-        break;
-      case ControllerButton.LEFT_THUMB:
-        setState(() {
-          leftThumbButtonPressed = false;
-        });
-        break;
-      case ControllerButton.RIGHT_THUMB:
-        setState(() {
-          rightThumbButtoPressed = false;
-        });
-        break;
-      case ControllerButton.LEFT_SHOULDER:
-        setState(() {
-          leftShoulderButtonPressed = false;
-        });
-        break;
-      case ControllerButton.RIGHT_SHOULDER:
-        setState(() {
-          rightSholderButtonPressed = false;
-        });
-        break;
+  void releaseButton(List<ControllerButton> buttons) {
+    for (ControllerButton button in buttons) {
+      switch (button) {
+        case ControllerButton.A_BUTTON:
+          setState(() {
+            aButtonPressed = false;
+          });
+          break;
+        case ControllerButton.B_BUTTON:
+          setState(() {
+            bButtonPressed = false;
+          });
+          break;
+        case ControllerButton.X_BUTTON:
+          setState(() {
+            xButtonPressed = false;
+          });
+          break;
+        case ControllerButton.Y_BUTTON:
+          setState(() {
+            yButtonPressed = false;
+          });
+          break;
+        case ControllerButton.DPAD_DOWN:
+          setState(() {
+            dDownButtonPressed = false;
+          });
+          break;
+        case ControllerButton.DPAD_UP:
+          setState(() {
+            dUpButtonPressed = false;
+          });
+          break;
+        case ControllerButton.DPAD_LEFT:
+          setState(() {
+            dLeftButtonPressed = false;
+          });
+          break;
+        case ControllerButton.DPAD_RIGHT:
+          setState(() {
+            dRightButtonPressed = false;
+          });
+          break;
+        case ControllerButton.START:
+          setState(() {
+            startButtonPressed = false;
+          });
+          break;
+        case ControllerButton.BACK:
+          setState(() {
+            backButtonPressed = false;
+          });
+          break;
+        case ControllerButton.LEFT_THUMB:
+          setState(() {
+            leftThumbButtonPressed = false;
+          });
+          break;
+        case ControllerButton.RIGHT_THUMB:
+          setState(() {
+            rightThumbButtoPressed = false;
+          });
+          break;
+        case ControllerButton.LEFT_SHOULDER:
+          setState(() {
+            leftShoulderButtonPressed = false;
+          });
+          break;
+        case ControllerButton.RIGHT_SHOULDER:
+          setState(() {
+            rightSholderButtonPressed = false;
+          });
+          break;
+      }
     }
   }
 
@@ -194,7 +196,7 @@ class _ControllerInformationContainterState
         });
       }
     };
-    controller.onReleaseButton = (button) => releaseButton(button);
+    controller.onReleaseButton = (buttons) => releaseButton(buttons);
 
     controller.variableKeysMapping = {
       VariableControllerKey.THUMB_RX: (value) {
