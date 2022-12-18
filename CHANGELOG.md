@@ -1,3 +1,10 @@
+## 1.2.3
+- Fix crash from unknow state at initialization.
+- ```_lastButtonsBitmask``` can't be null, it is 0 by default.
+- onReleaseButton dont get not mapped buttons.
+- [BREAKING CHANGE] onReleaseButton get more than one release per state.
+- Fix boken changes and update examples pubspecs.
+
 ## 1.2.2
 - Fix crash when press button that is not mapped.
 

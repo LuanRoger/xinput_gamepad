@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows/pages/widgets/controller_information_containter.dart';
+import 'package:xinput_gamepad_flutter_example/pages/widgets/controller_information_containter.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

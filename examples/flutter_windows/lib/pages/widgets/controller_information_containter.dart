@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_windows/pages/widgets/controller_state_chip.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
+import 'package:xinput_gamepad_flutter_example/pages/widgets/controller_state_chip.dart';
 
 class ControllerInformationContainter extends StatefulWidget {
   final Color color;
