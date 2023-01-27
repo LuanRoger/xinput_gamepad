@@ -9,7 +9,7 @@ import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
 import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
-import 'package:xinput_gamepad/src/utils/controller_list_utils.dart';
+import 'package:xinput_gamepad/src/utils/controller_interable_utils.dart';
 
 ///Used to simulate events using a XInput controller.
 ///
@@ -74,6 +74,8 @@ class Controller {
   ///};
   ///```
   Map<ControllerButton, Function>? buttonsMapping;
+
+  Map<Set<ControllerButton>, Function>? buttonsCombination;
 
   ///Set a new [buttonMapping] from [variantsButtonsMapping] mapping list.
   set buttonsFromMappingList(int mappingIndex) {
@@ -143,6 +145,7 @@ class Controller {
   Controller(
       {required this.index,
       this.buttonsMapping,
+      this.buttonsCombination,
       this.variantsButtonsMapping,
       this.variableKeysMapping,
       this.variantsVariableKeyMapping,
@@ -198,33 +201,20 @@ class Controller {
       _lastButtonsBitmask = buttonBitmask;
     }
 
-    _pressButton(buttonBitmask);
-  }
-
-  void _pressButton(int buttonBitmask) {
-    List<ControllerButton>? buttons =
+    List<ControllerButton>? pressedButtons =
         ControllerButton.convertFromBitmask(buttonBitmask);
-    if (buttons == null) return;
+    if (pressedButtons == null) return;
 
-    List<Function> pressMappedButtonsFunction = List.empty(growable: true);
-    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
-    if (isMultiPress) {
-      final newButtons = ControllerButton.convertFromBitmask(
-          buttonBitmask - _lastButtonsBitmask)!;
-      buttons = buttons.getContains(newButtons);
-    }
+    List<Function>? reactions = pressedButtons.length > 1
+        ? _combinationExecution(pressedButtons)
+        : _pressButton(pressedButtons, buttonBitmask);
+    if (reactions == null) return;
 
-    for (ControllerButton button in buttons) {
-      if (buttonsMapping!.containsKey(button)) {
-        pressMappedButtonsFunction.add(buttonsMapping![button]!);
-      }
-    }
-
-    for (Function pressAction in pressMappedButtonsFunction) {
+    for (Function pressAction in reactions) {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (_lastButtonsBitmask == 0 || isMultiPress) {
+          if (_lastButtonsBitmask == 0) {
             _lastButtonsBitmask = buttonBitmask;
             pressAction();
           }
@@ -236,6 +226,39 @@ class Controller {
           break;
       }
     }
+  }
+
+  List<Function>? _pressButton(
+      List<ControllerButton> pressedButons, int buttonBitmask) {
+    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
+    if (isMultiPress) {
+      final newButtons = ControllerButton.convertFromBitmask(
+          buttonBitmask - _lastButtonsBitmask)!;
+      pressedButons = pressedButons.getContains(newButtons);
+    }
+
+    List<Function> pressActions = List.empty(growable: true);
+    for (ControllerButton button in pressedButons) {
+      if (buttonsMapping!.containsKey(button)) {
+        pressActions.add(buttonsMapping![button]!);
+      }
+    }
+
+    return pressActions;
+  }
+
+  List<Function>? _combinationExecution(List<ControllerButton> pressedButtons) {
+    if (buttonsCombination == null) return null;
+
+    List<Function> combinationActions = List.empty(growable: true);
+    buttonsCombination!.forEach((buttons, action) {
+      Set<ControllerButton> pressedButtonsSet = pressedButtons.toSet();
+      if (buttons.containsAll(pressedButtonsSet)) {
+        combinationActions.add(action);
+      }
+    });
+
+    return combinationActions;
   }
 
   void _releaseButton(int buttonBitmask) {

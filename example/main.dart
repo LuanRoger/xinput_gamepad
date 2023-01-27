@@ -51,6 +51,10 @@ void main(List<String> arguments) {
       },
       ControllerButton.BACK: () => exit(0)
     };
+    controller.buttonsCombination = {
+      {ControllerButton.A_BUTTON, ControllerButton.X_BUTTON}: () =>
+          print("Combination")
+    };
     controller.variableKeysMapping = {
       VariableControllerKey.LEFT_TRIGGER: (value) =>
           print("Controller $controllerIndex - LEFT TRIGGER - $value"),
