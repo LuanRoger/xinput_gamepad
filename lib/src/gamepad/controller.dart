@@ -205,10 +205,17 @@ class Controller {
         ControllerButton.convertFromBitmask(buttonBitmask);
     if (pressedButtons == null) return;
 
-    List<Function>? reactions = pressedButtons.length > 1
-        ? _combinationExecution(pressedButtons)
-        : _pressButton(pressedButtons, buttonBitmask);
-    if (reactions == null) return;
+    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
+    Map<Set<ControllerButton>, Function>? combinationsActions =
+        _combinationExecution(pressedButtons);
+    Map<ControllerButton, Function>? buttonsActions = _pressButton(
+        pressedButtons, buttonBitmask, isMultiPress,
+        pressedCombinations: combinationsActions);
+    if (combinationsActions == null && buttonsActions == null) return;
+
+    List<Function> reactions = List.empty(growable: true)
+      ..addAll(combinationsActions?.values ?? List.empty())
+      ..addAll(buttonsActions?.values ?? List.empty());
 
     for (Function pressAction in reactions) {
       switch (buttonMode) {
@@ -228,33 +235,41 @@ class Controller {
     }
   }
 
-  List<Function>? _pressButton(
-      List<ControllerButton> pressedButons, int buttonBitmask) {
-    bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
+  Map<ControllerButton, Function>? _pressButton(
+      List<ControllerButton> pressedButons,
+      int buttonBitmask,
+      bool isMultiPress,
+      {Map<Set<ControllerButton>, Function>? pressedCombinations}) {
+    if (buttonsMapping == null) return null;
+
     if (isMultiPress) {
       final newButtons = ControllerButton.convertFromBitmask(
           buttonBitmask - _lastButtonsBitmask)!;
       pressedButons = pressedButons.getContains(newButtons);
     }
 
-    List<Function> pressActions = List.empty(growable: true);
+    Map<ControllerButton, Function> pressActions = {};
     for (ControllerButton button in pressedButons) {
-      if (buttonsMapping!.containsKey(button)) {
-        pressActions.add(buttonsMapping![button]!);
+      bool isInCombination = pressedCombinations?.keys
+              .any((element) => element.contains(button)) ??
+          false;
+      if (buttonsMapping!.containsKey(button) && !isInCombination) {
+        pressActions[button] = buttonsMapping![button]!;
       }
     }
 
     return pressActions;
   }
 
-  List<Function>? _combinationExecution(List<ControllerButton> pressedButtons) {
+  Map<Set<ControllerButton>, Function>? _combinationExecution(
+      List<ControllerButton> pressedButtons) {
     if (buttonsCombination == null) return null;
 
-    List<Function> combinationActions = List.empty(growable: true);
+    Map<Set<ControllerButton>, Function> combinationActions = {};
     buttonsCombination!.forEach((buttons, action) {
       Set<ControllerButton> pressedButtonsSet = pressedButtons.toSet();
-      if (buttons.containsAll(pressedButtonsSet)) {
-        combinationActions.add(action);
+      if (buttons.difference(pressedButtonsSet).isEmpty) {
+        combinationActions[buttons] = action;
       }
     });
 
