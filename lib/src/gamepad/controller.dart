@@ -206,6 +206,12 @@ class Controller {
     if (pressedButtons == null) return;
 
     bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
+    if (isMultiPress) {
+      final newButtons = ControllerButton.convertFromBitmask(
+          buttonBitmask - _lastButtonsBitmask)!;
+      pressedButtons = pressedButtons.getContains(newButtons);
+    }
+
     Map<Set<ControllerButton>, Function>? combinationsActions =
         _combinationExecution(pressedButtons);
     Map<ControllerButton, Function>? buttonsActions = _pressButton(
@@ -221,7 +227,7 @@ class Controller {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
-          if (_lastButtonsBitmask == 0) {
+          if (_lastButtonsBitmask == 0 || isMultiPress) {
             _lastButtonsBitmask = buttonBitmask;
             pressAction();
           }
@@ -241,12 +247,6 @@ class Controller {
       bool isMultiPress,
       {Map<Set<ControllerButton>, Function>? pressedCombinations}) {
     if (buttonsMapping == null) return null;
-
-    if (isMultiPress) {
-      final newButtons = ControllerButton.convertFromBitmask(
-          buttonBitmask - _lastButtonsBitmask)!;
-      pressedButons = pressedButons.getContains(newButtons);
-    }
 
     Map<ControllerButton, Function> pressActions = {};
     for (ControllerButton button in pressedButons) {
