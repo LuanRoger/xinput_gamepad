@@ -60,7 +60,7 @@ class Controller {
   }
 
   //Maping
-  ///Set the initial mapping of the controller's buttons.
+  ///Set the mapping of the controller's buttons.
   ///```dart
   ///controller.buttonsMapping = {
   ///    ControllerButton.A_BUTTON: () =>
@@ -75,7 +75,39 @@ class Controller {
   ///```
   Map<ControllerButton, Function>? buttonsMapping;
 
-  Map<Set<ControllerButton>, Function>? buttonsCombination;
+  Map<Set<ControllerButton>, Function>? _buttonsCombination;
+  Map<Set<ControllerButton>, Function>? get buttonsCombination =>
+      _buttonsCombination != null ? Map.from(_buttonsCombination!) : null;
+
+  ///Set the mapping of buttons combinations for the controller.
+  ///The map's key (Set\<ControllerButton\>) needs to be heigher than 1.
+  ///```dart
+  ///controller.buttonsCombination = {
+  ///   {
+  ///      ControllerButton.LEFT_SHOULDER,
+  ///      ControllerButton.RIGHT_SHOULDER
+  ///    }: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER]"),
+  ///    {ControllerButton.LEFT_THUMB, ControllerButton.RIGHT_THUMB}: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_THUMB; RIGHT_THUMB]"),
+  ///    {
+  ///      ControllerButton.LEFT_SHOULDER,
+  ///      ControllerButton.RIGHT_SHOULDER,
+  ///      ControllerButton.A_BUTTON
+  ///    }: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER; A_BUTTON]"),
+  ///};
+  ///```
+  set buttonsCombination(
+      Map<Set<ControllerButton>, Function>? buttonsCombination) {
+    if (buttonsCombination != null) {
+      buttonsCombination.forEach((key, _) {
+        assert(key.length > 1);
+      });
+    }
+
+    _buttonsCombination = buttonsCombination;
+  }
 
   ///Set a new [buttonMapping] from [variantsButtonsMapping] mapping list.
   set buttonsFromMappingList(int mappingIndex) {
@@ -145,7 +177,7 @@ class Controller {
   Controller(
       {required this.index,
       this.buttonsMapping,
-      this.buttonsCombination,
+      Map<Set<ControllerButton>, Function>? buttonsCombination,
       this.variantsButtonsMapping,
       this.variableKeysMapping,
       this.variantsVariableKeyMapping,
@@ -156,7 +188,16 @@ class Controller {
       this.rightVibrationSpeed = 16000,
       this.leftThumbDeadzone = 7849,
       this.rightThumbDeadzone = 8689,
-      this.triggersDeadzone = 30}) {
+      this.triggersDeadzone = 30})
+      : _buttonsCombination = buttonsCombination,
+        assert(leftThumbDeadzone >= 0 && leftThumbDeadzone <= 65535,
+            rightVibrationSpeed >= 0 && rightVibrationSpeed <= 65535) {
+    if (_buttonsCombination != null) {
+      _buttonsCombination!.forEach((key, _) {
+        assert(key.length > 1);
+      });
+    }
+
     _updateCapabilities();
     updateBatteryInfo();
   }
@@ -263,10 +304,10 @@ class Controller {
 
   Map<Set<ControllerButton>, Function>? _combinationExecution(
       List<ControllerButton> pressedButtons) {
-    if (buttonsCombination == null) return null;
+    if (_buttonsCombination == null || pressedButtons.length <= 1) return null;
 
     Map<Set<ControllerButton>, Function> combinationActions = {};
-    buttonsCombination!.forEach((buttons, action) {
+    _buttonsCombination!.forEach((buttons, action) {
       Set<ControllerButton> pressedButtonsSet = pressedButtons.toSet();
       if (buttons.difference(pressedButtonsSet).isEmpty) {
         combinationActions[buttons] = action;
