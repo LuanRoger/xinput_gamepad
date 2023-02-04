@@ -1,3 +1,9 @@
+## 1.3.0
+- Add support to buttons combinations.
+- [BREAKING CHANGE] Create assertations for ```Controller``` class.
+- Update dependencies.
+- Update examples.
+
 ## 1.2.3
 - Fix crash from unknow state at initialization.
 - ```_lastButtonsBitmask``` can't be null, it is 0 by default.
