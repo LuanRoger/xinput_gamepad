@@ -28,7 +28,8 @@ enum ControllerFlag {
 
   const ControllerFlag(this.flagBitmask);
 
-  factory ControllerFlag.fromBitmask(int bitmask) => ControllerFlag.values
-          .firstWhereOrNull((element) => element.flagBitmask == bitmask) ?? 
-          ControllerFlag.UNKNOWN;
+  factory ControllerFlag.fromBitmask(int bitmask) =>
+      ControllerFlag.values
+          .firstWhereOrNull((element) => element.flagBitmask == bitmask) ??
+      ControllerFlag.UNKNOWN;
 }

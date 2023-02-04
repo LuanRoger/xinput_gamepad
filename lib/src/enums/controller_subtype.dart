@@ -22,6 +22,8 @@ enum ControllerSubType {
 
   const ControllerSubType(this.subTypeBitmask);
 
-  factory ControllerSubType.fromBitmask(int bitmask) => ControllerSubType.values
-      .firstWhereOrNull((element) => element.subTypeBitmask == bitmask) ?? ControllerSubType.UNKNOWN;
+  factory ControllerSubType.fromBitmask(int bitmask) =>
+      ControllerSubType.values
+          .firstWhereOrNull((element) => element.subTypeBitmask == bitmask) ??
+      ControllerSubType.UNKNOWN;
 }

@@ -12,6 +12,8 @@ enum ControllerType {
 
   const ControllerType(this.controllerTypeBitmask);
 
-  factory ControllerType.fromBitmask(int bitmask) => ControllerType.values
-      .firstWhereOrNull((element) => element.controllerTypeBitmask == bitmask) ?? ControllerType.UNKNOWN;
+  factory ControllerType.fromBitmask(int bitmask) =>
+      ControllerType.values.firstWhereOrNull(
+          (element) => element.controllerTypeBitmask == bitmask) ??
+      ControllerType.UNKNOWN;
 }
