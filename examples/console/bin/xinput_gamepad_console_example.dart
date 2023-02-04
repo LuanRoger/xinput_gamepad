@@ -9,7 +9,7 @@ void main(List<String> arguments) {
   for (int controllerIndex
       in ControllersManager.getIndexConnectedControllers()) {
     final Controller controller =
-        Controller(index: controllerIndex, buttonMode: ButtonMode.PRESS);
+        Controller(index: controllerIndex, buttonMode: ButtonMode.HOLD);
     controller.buttonsMapping = {
       ControllerButton.A_BUTTON: () =>
           print("Controller $controllerIndex - Button A"),
@@ -50,6 +50,21 @@ void main(List<String> arguments) {
         print("============================================================");
       },
       ControllerButton.BACK: () => exit(0)
+    };
+    controller.buttonsCombination = {
+      {
+        ControllerButton.LEFT_SHOULDER,
+        ControllerButton.RIGHT_SHOULDER
+      }: () => print(
+          "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER]"),
+      {ControllerButton.LEFT_THUMB, ControllerButton.RIGHT_THUMB}: () => print(
+          "Controller $controllerIndex - Combination [LEFT_THUMB; RIGHT_THUMB]"),
+      {
+        ControllerButton.LEFT_SHOULDER,
+        ControllerButton.RIGHT_SHOULDER,
+        ControllerButton.A_BUTTON
+      }: () => print(
+          "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER; A_BUTTON]"),
     };
     controller.variableKeysMapping = {
       VariableControllerKey.LEFT_TRIGGER: (value) =>

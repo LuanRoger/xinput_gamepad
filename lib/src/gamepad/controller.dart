@@ -9,7 +9,7 @@ import 'package:xinput_gamepad/src/models/controller_battery.dart';
 import 'package:xinput_gamepad/src/models/controller_capabilities.dart';
 import 'package:xinput_gamepad/src/utils/controller_utils.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
-import 'package:xinput_gamepad/src/utils/controller_list_utils.dart';
+import 'package:xinput_gamepad/src/utils/controller_interable_utils.dart';
 
 ///Used to simulate events using a XInput controller.
 ///
@@ -60,7 +60,7 @@ class Controller {
   }
 
   //Maping
-  ///Set the initial mapping of the controller's buttons.
+  ///Set the mapping of the controller's buttons.
   ///```dart
   ///controller.buttonsMapping = {
   ///    ControllerButton.A_BUTTON: () =>
@@ -74,6 +74,40 @@ class Controller {
   ///};
   ///```
   Map<ControllerButton, Function>? buttonsMapping;
+
+  Map<Set<ControllerButton>, Function>? _buttonsCombination;
+  Map<Set<ControllerButton>, Function>? get buttonsCombination =>
+      _buttonsCombination != null ? Map.from(_buttonsCombination!) : null;
+
+  ///Set the mapping of buttons combinations for the controller.
+  ///The map's key (Set\<ControllerButton\>) needs to be heigher than 1.
+  ///```dart
+  ///controller.buttonsCombination = {
+  ///   {
+  ///      ControllerButton.LEFT_SHOULDER,
+  ///      ControllerButton.RIGHT_SHOULDER
+  ///    }: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER]"),
+  ///    {ControllerButton.LEFT_THUMB, ControllerButton.RIGHT_THUMB}: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_THUMB; RIGHT_THUMB]"),
+  ///    {
+  ///      ControllerButton.LEFT_SHOULDER,
+  ///      ControllerButton.RIGHT_SHOULDER,
+  ///      ControllerButton.A_BUTTON
+  ///    }: () => print(
+  ///        "Controller $controllerIndex - Combination [LEFT_SHOULDER; RIGHT_SHOULDER; A_BUTTON]"),
+  ///};
+  ///```
+  set buttonsCombination(
+      Map<Set<ControllerButton>, Function>? buttonsCombination) {
+    if (buttonsCombination != null) {
+      buttonsCombination.forEach((key, _) {
+        assert(key.length > 1);
+      });
+    }
+
+    _buttonsCombination = buttonsCombination;
+  }
 
   ///Set a new [buttonMapping] from [variantsButtonsMapping] mapping list.
   set buttonsFromMappingList(int mappingIndex) {
@@ -143,6 +177,7 @@ class Controller {
   Controller(
       {required this.index,
       this.buttonsMapping,
+      Map<Set<ControllerButton>, Function>? buttonsCombination,
       this.variantsButtonsMapping,
       this.variableKeysMapping,
       this.variantsVariableKeyMapping,
@@ -153,7 +188,16 @@ class Controller {
       this.rightVibrationSpeed = 16000,
       this.leftThumbDeadzone = 7849,
       this.rightThumbDeadzone = 8689,
-      this.triggersDeadzone = 30}) {
+      this.triggersDeadzone = 30})
+      : _buttonsCombination = buttonsCombination,
+        assert(leftThumbDeadzone >= 0 && leftThumbDeadzone <= 65535,
+            rightVibrationSpeed >= 0 && rightVibrationSpeed <= 65535) {
+    if (_buttonsCombination != null) {
+      _buttonsCombination!.forEach((key, _) {
+        assert(key.length > 1);
+      });
+    }
+
     _updateCapabilities();
     updateBatteryInfo();
   }
@@ -198,29 +242,29 @@ class Controller {
       _lastButtonsBitmask = buttonBitmask;
     }
 
-    _pressButton(buttonBitmask);
-  }
-
-  void _pressButton(int buttonBitmask) {
-    List<ControllerButton>? buttons =
+    List<ControllerButton>? pressedButtons =
         ControllerButton.convertFromBitmask(buttonBitmask);
-    if (buttons == null) return;
+    if (pressedButtons == null) return;
 
-    List<Function> pressMappedButtonsFunction = List.empty(growable: true);
     bool isMultiPress = buttonBitmask > _lastButtonsBitmask;
     if (isMultiPress) {
       final newButtons = ControllerButton.convertFromBitmask(
           buttonBitmask - _lastButtonsBitmask)!;
-      buttons = buttons.getContains(newButtons);
+      pressedButtons = pressedButtons.getContains(newButtons);
     }
 
-    for (ControllerButton button in buttons) {
-      if (buttonsMapping!.containsKey(button)) {
-        pressMappedButtonsFunction.add(buttonsMapping![button]!);
-      }
-    }
+    Map<Set<ControllerButton>, Function>? combinationsActions =
+        _combinationExecution(pressedButtons);
+    Map<ControllerButton, Function>? buttonsActions = _pressButton(
+        pressedButtons, buttonBitmask, isMultiPress,
+        pressedCombinations: combinationsActions);
+    if (combinationsActions == null && buttonsActions == null) return;
 
-    for (Function pressAction in pressMappedButtonsFunction) {
+    List<Function> reactions = List.empty(growable: true)
+      ..addAll(combinationsActions?.values ?? List.empty())
+      ..addAll(buttonsActions?.values ?? List.empty());
+
+    for (Function pressAction in reactions) {
       switch (buttonMode) {
         case ButtonMode.PRESS:
           //When the the current state's button is diferent than last.
@@ -236,6 +280,41 @@ class Controller {
           break;
       }
     }
+  }
+
+  Map<ControllerButton, Function>? _pressButton(
+      List<ControllerButton> pressedButons,
+      int buttonBitmask,
+      bool isMultiPress,
+      {Map<Set<ControllerButton>, Function>? pressedCombinations}) {
+    if (buttonsMapping == null) return null;
+
+    Map<ControllerButton, Function> pressActions = {};
+    for (ControllerButton button in pressedButons) {
+      bool isInCombination = pressedCombinations?.keys
+              .any((element) => element.contains(button)) ??
+          false;
+      if (buttonsMapping!.containsKey(button) && !isInCombination) {
+        pressActions[button] = buttonsMapping![button]!;
+      }
+    }
+
+    return pressActions;
+  }
+
+  Map<Set<ControllerButton>, Function>? _combinationExecution(
+      List<ControllerButton> pressedButtons) {
+    if (_buttonsCombination == null || pressedButtons.length <= 1) return null;
+
+    Map<Set<ControllerButton>, Function> combinationActions = {};
+    _buttonsCombination!.forEach((buttons, action) {
+      Set<ControllerButton> pressedButtonsSet = pressedButtons.toSet();
+      if (buttons.difference(pressedButtonsSet).isEmpty) {
+        combinationActions[buttons] = action;
+      }
+    });
+
+    return combinationActions;
   }
 
   void _releaseButton(int buttonBitmask) {
