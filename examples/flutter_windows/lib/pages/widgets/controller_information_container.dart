@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:xinput_gamepad/xinput_gamepad.dart';
 import 'package:xinput_gamepad_flutter_example/pages/widgets/controller_state_chip.dart';
 
-class ControllerInformationContainter extends StatefulWidget {
+class ControllerInformationContainer extends StatefulWidget {
   final Color color;
   final int index;
 
-  ControllerInformationContainter(
+  ControllerInformationContainer(
       {Key? key, required this.index, required this.color})
       : super(key: key);
 
   @override
-  State<ControllerInformationContainter> createState() =>
-      _ControllerInformationContainterState();
+  State<ControllerInformationContainer> createState() =>
+      _ControllerInformationContainerState();
 }
 
-class _ControllerInformationContainterState
-    extends State<ControllerInformationContainter> {
+class _ControllerInformationContainerState
+    extends State<ControllerInformationContainer> {
   late Controller controller;
 
   final String pressedString = "Pressed";
