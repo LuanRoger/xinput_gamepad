@@ -1,3 +1,8 @@
+## 1.3.1
+- Update dependencies.
+- Update windows example depdenencies ([#12](https://github.com/LuanRoger/xinput_gamepad/pull/12)).
+- Refactor windows examples widgets names ([#12](https://github.com/LuanRoger/xinput_gamepad/pull/12)).
+
 ## 1.3.0
 - Add support to buttons combinations.
 - [BREAKING CHANGE] Create assertations for ```Controller``` class.
